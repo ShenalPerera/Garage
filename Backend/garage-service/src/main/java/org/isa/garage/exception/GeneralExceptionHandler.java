@@ -1,6 +1,7 @@
 package org.isa.garage.exception;
 
 import org.isa.garage.controller.GarageRestController;
+import org.isa.garage.dto.UserErrorResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -30,5 +31,16 @@ public class GeneralExceptionHandler {
         });
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserAlreadyExistException.class)
+    public ResponseEntity<?> handleUserAlreadyExitsException(UserAlreadyExistException ex){
+        UserErrorResponseDTO userErrorResponseDTO = new UserErrorResponseDTO(
+                HttpStatus.CONFLICT.value(),
+                "Email address is already registered",
+                System.currentTimeMillis()
+        );
+
+        return new ResponseEntity<>(userErrorResponseDTO,HttpStatus.CONFLICT);
     }
 }
