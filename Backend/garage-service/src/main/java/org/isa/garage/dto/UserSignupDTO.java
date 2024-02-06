@@ -3,26 +3,21 @@ package org.isa.garage.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class UserSignupDTO {
-    @NotBlank(message = "Email is empty")
-    @NotNull(message = "Email is not found")
-    @Email
+    @NotBlank(message = "Email is empty/not found")
+    @Email(message = "Invalid email")
     private String email;
 
-    @NotNull(message = "Password is not found")
-    @NotBlank(message = "Password is empty")
-    @Size(min = 4)
+    @NotBlank(message = "Password is empty/notfound")
+    @Size(min = 4 ,message = "Password should have least 4 characters")
     private String password;
 
-    @NotBlank(message = "First name is empty")
-    @NotNull(message = "First name is not found")
+    @NotBlank(message = "First name is empty/not found")
     private String firstname;
 
-    @NotBlank(message = "Last name is empty")
-    @NotNull(message = "Last name is not found")
+    @NotBlank(message = "Last name is empty/not found")
     private String lastname;
 
 
