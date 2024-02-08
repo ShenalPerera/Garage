@@ -1,9 +1,10 @@
 package org.isa.garage.dao;
 
+import org.isa.garage.dto.UserDTO;
 import org.isa.garage.dto.UserSignupDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -36,5 +37,25 @@ public class UserDaoImpl implements UserDao{
                 true);
 
         return rowAffected == 1;
+    }
+
+    @Override
+    public UserDTO loadUserFromEmail(String email) {
+        String sql = "SELECT id,email,password,isActive FROM user WHERE email=?";
+        try {
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+                UserDTO user = new UserDTO();
+                user.setId(rs.getLong("id"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setActive(rs.getBoolean("isActive"));
+                return user;
+            }, email);
+
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
+        
     }
 }

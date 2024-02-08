@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -42,5 +44,14 @@ public class GeneralExceptionHandler {
         );
 
         return new ResponseEntity<>(userErrorResponseDTO,HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<?> handleEmailNotFoundException(AuthenticationException exception){
+        UserErrorResponseDTO errorResponseDTO  = new UserErrorResponseDTO(
+                HttpStatus.UNAUTHORIZED.value(),
+                "You are not authorized",
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(errorResponseDTO,HttpStatus.UNAUTHORIZED);
     }
 }

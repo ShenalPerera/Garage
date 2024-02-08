@@ -1,5 +1,6 @@
 package org.isa.garage.config;
 
+import org.isa.garage.dto.UserDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -20,6 +21,13 @@ public class GarageUserDetails implements UserDetails {
         this.enabled = enabled;
     }
 
+    public GarageUserDetails(UserDTO userDTO){
+        this.id = userDTO.getId();
+        this.username = userDTO.getEmail();
+        this.password = userDTO.getPassword();
+        this.authorities = null;
+        this.enabled = userDTO.isActive();
+    }
     public Long getId() {
         return id;
     }
