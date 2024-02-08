@@ -52,7 +52,7 @@ public class JwtTokenUtil {
         return Jwts.builder()
                 .setSubject(garageUserDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
                 .addClaims(claims)
                 .signWith(key,SignatureAlgorithm.HS256)
                 .compact();

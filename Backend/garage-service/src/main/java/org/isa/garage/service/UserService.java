@@ -49,7 +49,6 @@ public class UserService {
             return new JWTResponseDTO(token, garageUserDetails.getUsername());
         }
 
-
         return null;
     }
 }
