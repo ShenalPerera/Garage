@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -20,15 +21,15 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(GarageRestController.class);
     private final UserDaoImpl userDao;
-
     private final JwtTokenUtil jwtTokenUtil;
-
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserDaoImpl userDao, JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager) {
+    public UserService(UserDaoImpl userDao, JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.jwtTokenUtil = jwtTokenUtil;
         this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public boolean saveUser(UserSignupDTO userSignupDTO) {
@@ -36,6 +37,7 @@ public class UserService {
             logger.info("Email : {} already exist", userSignupDTO.getEmail());
             throw new UserAlreadyExistException("User already exist with email : " + userSignupDTO.getEmail());
         }
+        userSignupDTO.setPassword(passwordEncoder.encode(userSignupDTO.getPassword()));
         return userDao.saveUser(userSignupDTO);
     }
 
