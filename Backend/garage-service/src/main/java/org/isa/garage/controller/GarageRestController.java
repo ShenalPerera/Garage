@@ -4,14 +4,19 @@ import jakarta.validation.Valid;
 import org.isa.garage.dto.JWTResponseDTO;
 import org.isa.garage.dto.UserLoginDTO;
 import org.isa.garage.dto.UserSignupDTO;
+import org.isa.garage.entity.TimeSlot;
+import org.isa.garage.service.ScheduleService;
 import org.isa.garage.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class GarageRestController {
@@ -20,8 +25,10 @@ public class GarageRestController {
 
     private final UserService userService;
 
-    public GarageRestController(UserService userService) {
+    private final ScheduleService scheduleService;
+    public GarageRestController(UserService userService, ScheduleService scheduleService) {
         this.userService = userService;
+        this.scheduleService = scheduleService;
     }
 
     @PostMapping("/signup")
@@ -39,5 +46,10 @@ public class GarageRestController {
         JWTResponseDTO jwtResponseDTO = userService.login(userLoginDTO);
         logger.info("Successfully Logged in");
         return new ResponseEntity<>(jwtResponseDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/test")
+    public List<TimeSlot> testEndPoints(){
+        return scheduleService.testMethod();
     }
 }

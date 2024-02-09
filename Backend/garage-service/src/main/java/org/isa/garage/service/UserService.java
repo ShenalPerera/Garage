@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    private static final Logger logger = LoggerFactory.getLogger(GarageRestController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserDaoImpl userDao;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
