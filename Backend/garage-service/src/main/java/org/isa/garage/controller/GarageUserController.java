@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class GarageRestController {
-    private static final Logger logger = LoggerFactory.getLogger(GarageRestController.class);
+public class GarageUserController {
+    private static final Logger logger = LoggerFactory.getLogger(GarageUserController.class);
 
 
     private final UserService userService;
@@ -25,7 +25,7 @@ public class GarageRestController {
     private final ScheduleService scheduleService;
 
     private final GarageServicesHandlerService garageServicesHandlerService;
-    public GarageRestController(UserService userService, ScheduleService scheduleService, GarageServicesHandlerService garageServicesHandlerService) {
+    public GarageUserController(UserService userService, ScheduleService scheduleService, GarageServicesHandlerService garageServicesHandlerService) {
         this.userService = userService;
         this.scheduleService = scheduleService;
         this.garageServicesHandlerService = garageServicesHandlerService;

@@ -1,7 +1,6 @@
 package org.isa.garage.service;
 
 import org.isa.garage.config.GarageUserDetails;
-import org.isa.garage.controller.GarageRestController;
 import org.isa.garage.dao.UserDaoImpl;
 import org.isa.garage.dto.JWTResponseDTO;
 import org.isa.garage.dto.UserLoginDTO;

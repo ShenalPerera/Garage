@@ -1481,7 +1481,7 @@ java.sql.SQLSyntaxErrorException: Table 'garage.time_slot_service' doesn't exist
 	at java.base/java.lang.String.valueOf(String.java:4222) ~[na:na]
 	at java.base/java.io.PrintStream.println(PrintStream.java:1047) ~[na:na]
 	at org.isa.garage.garageService.ScheduleService.testMethod(ScheduleService.java:21) ~[main/:na]
-	at org.isa.garage.controller.GarageRestController.testEndPoints(GarageRestController.java:53) ~[main/:na]
+	at org.isa.garage.controller.GarageUserController.testEndPoints(GarageRestController.java:53) ~[main/:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
@@ -1627,7 +1627,7 @@ java.sql.SQLSyntaxErrorException: Table 'garage.time_slot_service' doesn't exist
 	at java.base/java.lang.String.valueOf(String.java:4222) ~[na:na]
 	at java.base/java.io.PrintStream.println(PrintStream.java:1047) ~[na:na]
 	at org.isa.garage.garageService.ScheduleService.testMethod(ScheduleService.java:21) ~[main/:na]
-	at org.isa.garage.controller.GarageRestController.testEndPoints(GarageRestController.java:53) ~[main/:na]
+	at org.isa.garage.controller.GarageUserController.testEndPoints(GarageRestController.java:53) ~[main/:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
@@ -1773,7 +1773,7 @@ java.sql.SQLSyntaxErrorException: Table 'garage.time_slot_service' doesn't exist
 	at java.base/java.lang.String.valueOf(String.java:4222) ~[na:na]
 	at java.base/java.io.PrintStream.println(PrintStream.java:1047) ~[na:na]
 	at org.isa.garage.garageService.ScheduleService.testMethod(ScheduleService.java:21) ~[main/:na]
-	at org.isa.garage.controller.GarageRestController.testEndPoints(GarageRestController.java:53) ~[main/:na]
+	at org.isa.garage.controller.GarageUserController.testEndPoints(GarageRestController.java:53) ~[main/:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
@@ -2007,7 +2007,7 @@ java.sql.SQLSyntaxErrorException: Table 'garage.time_slot_service' doesn't exist
 	at java.base/java.lang.StringBuilder.append(StringBuilder.java:173) ~[na:na]
 	at java.base/java.util.AbstractCollection.toString(AbstractCollection.java:457) ~[na:na]
 	at org.isa.garage.garageService.ScheduleService.testMethod(ScheduleService.java:25) ~[main/:na]
-	at org.isa.garage.controller.GarageRestController.testEndPoints(GarageRestController.java:53) ~[main/:na]
+	at org.isa.garage.controller.GarageUserController.testEndPoints(GarageRestController.java:53) ~[main/:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
@@ -2211,7 +2211,7 @@ java.sql.SQLSyntaxErrorException: Table 'garage.time_slot_service' doesn't exist
 
 java.lang.NullPointerException: Cannot invoke "org.isa.garage.repository.GarageServiceRepository.findAll()" because "this.garageServiceRepository" is null
 	at org.isa.garage.garageService.GarageServicesHandlerService.getAllServices(GarageServicesHandlerService.java:18) ~[main/:na]
-	at org.isa.garage.controller.GarageRestController.getAllServices(GarageRestController.java:57) ~[main/:na]
+	at org.isa.garage.controller.GarageUserController.getAllServices(GarageRestController.java:57) ~[main/:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
@@ -2350,7 +2350,7 @@ java.lang.NullPointerException: Cannot invoke "org.isa.garage.repository.GarageS
 
 java.lang.NullPointerException: Cannot invoke "org.isa.garage.repository.GarageServiceRepository.findAll()" because "this.garageServiceRepository" is null
 	at org.isa.garage.garageService.GarageServicesHandlerService.getAllServices(GarageServicesHandlerService.java:21) ~[main/:na]
-	at org.isa.garage.controller.GarageRestController.getAllServices(GarageRestController.java:57) ~[main/:na]
+	at org.isa.garage.controller.GarageUserController.getAllServices(GarageRestController.java:57) ~[main/:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
@@ -2516,7 +2516,7 @@ java.lang.NullPointerException: Cannot invoke "org.isa.garage.repository.GarageS
 
 java.lang.NullPointerException: Cannot invoke "org.isa.garage.repository.GarageServiceRepository.findAll()" because "this.garageServiceRepository" is null
 	at org.isa.garage.garageService.GarageServicesHandlerService.getAllServices(GarageServicesHandlerService.java:18) ~[main/:na]
-	at org.isa.garage.controller.GarageRestController.getAllServices(GarageRestController.java:57) ~[main/:na]
+	at org.isa.garage.controller.GarageUserController.getAllServices(GarageRestController.java:57) ~[main/:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
@@ -2656,7 +2656,7 @@ java.lang.NullPointerException: Cannot invoke "org.isa.garage.repository.GarageS
 
 java.lang.NullPointerException: Cannot invoke "org.isa.garage.repository.GarageServiceRepository.findAll()" because "this.garageServiceRepository" is null
 	at org.isa.garage.garageService.GarageServicesHandlerService.getAllServices(GarageServicesHandlerService.java:18) ~[main/:na]
-	at org.isa.garage.controller.GarageRestController.getAllServices(GarageRestController.java:57) ~[main/:na]
+	at org.isa.garage.controller.GarageUserController.getAllServices(GarageRestController.java:57) ~[main/:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
@@ -2765,7 +2765,7 @@ java.lang.NullPointerException: Cannot invoke "org.isa.garage.repository.GarageS
 
 java.lang.NullPointerException: Cannot invoke "org.isa.garage.repository.GarageServiceRepository.findAll()" because "this.garageServiceRepository" is null
 	at org.isa.garage.garageService.GarageServicesHandlerService.getAllServices(GarageServicesHandlerService.java:18) ~[main/:na]
-	at org.isa.garage.controller.GarageRestController.getAllServices(GarageRestController.java:57) ~[main/:na]
+	at org.isa.garage.controller.GarageUserController.getAllServices(GarageRestController.java:57) ~[main/:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
@@ -2875,7 +2875,7 @@ java.lang.NullPointerException: Cannot invoke "org.isa.garage.repository.GarageS
 
 java.lang.NullPointerException: Cannot invoke "org.isa.garage.repository.GarageServiceRepository.findAll()" because "this.garageServiceRepository" is null
 	at org.isa.garage.garageService.GarageServicesHandlerService.getAllServices(GarageServicesHandlerService.java:18) ~[main/:na]
-	at org.isa.garage.controller.GarageRestController.getAllServices(GarageRestController.java:57) ~[main/:na]
+	at org.isa.garage.controller.GarageUserController.getAllServices(GarageRestController.java:57) ~[main/:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
@@ -4769,3 +4769,30 @@ Caused by: java.sql.SQLException: Referencing column 'service_id' and referenced
 2024-02-12T15:10:56.211+05:30  INFO 38173 --- [http-nio-8080-exec-3] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2024-02-12T15:10:56.211+05:30  INFO 38173 --- [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2024-02-12T15:10:56.212+05:30  INFO 38173 --- [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-02-12T15:17:36.229+05:30  INFO 38173 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 4 class path changes (1 addition, 1 deletion, 2 modifications)
+2024-02-12T15:17:36.235+05:30  INFO 38173 --- [Thread-15] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-02-12T15:17:36.236+05:30  INFO 38173 --- [Thread-15] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown initiated...
+2024-02-12T15:17:36.239+05:30  INFO 38173 --- [Thread-15] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown completed.
+2024-02-12T15:17:36.292+05:30  INFO 38173 --- [restartedMain] org.isa.garage.GarageApplication         : Starting GarageApplication using Java 17.0.10 with PID 38173 (/home/pshenal/Desktop/Projects/Garage/Backend/garage-service/build/classes/java/main started by pshenal in /home/pshenal/Desktop/Projects/Garage/Backend/garage-service)
+2024-02-12T15:17:36.292+05:30  INFO 38173 --- [restartedMain] org.isa.garage.GarageApplication         : No active profile set, falling back to 1 default profile: "default"
+2024-02-12T15:17:36.335+05:30  INFO 38173 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-12T15:17:36.339+05:30  INFO 38173 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 3 ms. Found 2 JPA repository interfaces.
+2024-02-12T15:17:36.370+05:30  INFO 38173 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-02-12T15:17:36.370+05:30  INFO 38173 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-02-12T15:17:36.370+05:30  INFO 38173 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.18]
+2024-02-12T15:17:36.373+05:30  INFO 38173 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-02-12T15:17:36.373+05:30  INFO 38173 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 80 ms
+2024-02-12T15:17:36.391+05:30  INFO 38173 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-02-12T15:17:36.392+05:30  INFO 38173 --- [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-02-12T15:17:36.393+05:30  INFO 38173 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-02-12T15:17:36.393+05:30  INFO 38173 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Starting...
+2024-02-12T15:17:36.400+05:30  INFO 38173 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-5 - Added connection com.mysql.cj.jdbc.ConnectionImpl@37b7877f
+2024-02-12T15:17:36.400+05:30  INFO 38173 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Start completed.
+2024-02-12T15:17:36.416+05:30  INFO 38173 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-02-12T15:17:36.425+05:30  INFO 38173 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-12T15:17:36.460+05:30  WARN 38173 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-12T15:17:36.483+05:30  INFO 38173 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7e4df117, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5d0fe2a6, org.springframework.security.web.context.SecurityContextHolderFilter@4f0f4532, org.springframework.security.web.header.HeaderWriterFilter@7f62dea4, org.springframework.web.filter.CorsFilter@18160163, org.springframework.security.web.authentication.logout.LogoutFilter@6d49c515, org.isa.garage.filter.JWTFilter@fe38c82, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1679f2fe, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7f87896b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@66621f13, org.springframework.security.web.session.SessionManagementFilter@1db759b3, org.springframework.security.web.access.ExceptionTranslationFilter@4e22e1ac, org.springframework.security.web.access.intercept.AuthorizationFilter@77f13f65]
+2024-02-12T15:17:36.503+05:30  INFO 38173 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-02-12T15:17:36.507+05:30  INFO 38173 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2024-02-12T15:17:36.509+05:30  INFO 38173 --- [restartedMain] org.isa.garage.GarageApplication         : Started GarageApplication in 0.226 seconds (process running for 1981.996)
+2024-02-12T15:17:36.510+05:30  INFO 38173 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
