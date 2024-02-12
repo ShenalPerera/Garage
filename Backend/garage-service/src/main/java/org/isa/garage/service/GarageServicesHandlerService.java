@@ -49,4 +49,8 @@ public class GarageServicesHandlerService {
         return new GarageServiceDTO(updatedGarageService.getId(), updatedGarageService.getServiceName(), updatedGarageService.getDuration());
     }
 
+    public void deleteGarageService(Integer id){
+        garageServiceRepository.deleteById(id);
+    }
+
 }

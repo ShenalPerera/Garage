@@ -39,4 +39,10 @@ public class GarageServiceController {
     public ResponseEntity<?> editGarageService(@Valid @RequestBody GarageServiceUpdateDTO garageServiceUpdateDTO){
         return new ResponseEntity<>(garageServicesHandlerService.editGarageService(garageServiceUpdateDTO),HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/delete-service/{id}")
+    public ResponseEntity<?> deleteGarageService(@PathVariable Integer id){
+        garageServicesHandlerService.deleteGarageService(id);
+        return ResponseEntity.noContent().build();
+    }
 }
