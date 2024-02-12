@@ -5,6 +5,7 @@ import org.isa.garage.dto.JWTResponseDTO;
 import org.isa.garage.dto.UserLoginDTO;
 import org.isa.garage.dto.UserSignupDTO;
 import org.isa.garage.entity.TimeSlot;
+import org.isa.garage.service.GarageServicesHandlerService;
 import org.isa.garage.service.ScheduleService;
 import org.isa.garage.service.UserService;
 import org.slf4j.Logger;
@@ -26,9 +27,12 @@ public class GarageRestController {
     private final UserService userService;
 
     private final ScheduleService scheduleService;
-    public GarageRestController(UserService userService, ScheduleService scheduleService) {
+
+    private final GarageServicesHandlerService garageServicesHandlerService;
+    public GarageRestController(UserService userService, ScheduleService scheduleService, GarageServicesHandlerService garageServicesHandlerService) {
         this.userService = userService;
         this.scheduleService = scheduleService;
+        this.garageServicesHandlerService = garageServicesHandlerService;
     }
 
     @PostMapping("/signup")
@@ -48,8 +52,8 @@ public class GarageRestController {
         return new ResponseEntity<>(jwtResponseDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/test")
-    public List<TimeSlot> testEndPoints(){
-        return scheduleService.testMethod();
+    @GetMapping("/get-services")
+    public ResponseEntity<?> getAllServices(){
+        return new ResponseEntity<>(garageServicesHandlerService.getAllServices(),HttpStatus.OK) ;
     }
 }
