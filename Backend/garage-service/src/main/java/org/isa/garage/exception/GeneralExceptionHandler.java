@@ -54,4 +54,15 @@ public class GeneralExceptionHandler {
         );
         return new ResponseEntity<>(errorResponseDTO,HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(GarageServiceNotFoundException.class)
+    public ResponseEntity<?> handleGarageServiceNotFoundException(GarageServiceNotFoundException exception){
+        UserErrorResponseDTO error = new UserErrorResponseDTO(
+                HttpStatus.NOT_FOUND.value(),
+                exception.getMessage(),
+                System.currentTimeMillis()
+        );
+
+        return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
+    }
 }

@@ -2,6 +2,7 @@ package org.isa.garage.controller;
 
 import jakarta.validation.Valid;
 import org.isa.garage.dto.GarageServiceDTO;
+import org.isa.garage.dto.GarageServiceUpdateDTO;
 import org.isa.garage.entity.GarageService;
 import org.isa.garage.service.GarageServicesHandlerService;
 import org.slf4j.Logger;
@@ -31,6 +32,11 @@ public class GarageServiceController {
 
     @PostMapping("/create-service")
     public ResponseEntity<?> createGarageService(@Valid @RequestBody GarageServiceDTO garageServiceDTO){
-        return new ResponseEntity<>(garageServicesHandlerService.createService(garageServiceDTO),HttpStatus.CREATED);
+        return new ResponseEntity<>(garageServicesHandlerService.createGarageService(garageServiceDTO),HttpStatus.CREATED);
+    }
+
+    @PutMapping("/edit-service")
+    public ResponseEntity<?> editGarageService(@Valid @RequestBody GarageServiceUpdateDTO garageServiceUpdateDTO){
+        return new ResponseEntity<>(garageServicesHandlerService.editGarageService(garageServiceUpdateDTO),HttpStatus.CREATED);
     }
 }
