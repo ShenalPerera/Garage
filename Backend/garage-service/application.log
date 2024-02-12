@@ -2143,3 +2143,6 @@ java.sql.SQLSyntaxErrorException: Table 'garage.time_slot_service' doesn't exist
 2024-02-09T17:00:49.572+05:30  INFO 33802 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2024-02-09T17:00:49.573+05:30  INFO 33802 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
 2024-02-09T17:00:49.583+05:30  INFO 33802 --- [http-nio-8080-exec-2] org.isa.garage.service.ScheduleService   : [TimeSlot{id=1, startTime=16:34:49, endTime=18:35:03, date=2024-02-09, maxCapacity=4, currentCapacity=1}]
+2024-02-09T17:32:15.596+05:30  INFO 33802 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-02-09T17:32:15.596+05:30  INFO 33802 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-18 - Shutdown initiated...
+2024-02-09T17:32:15.598+05:30  INFO 33802 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-18 - Shutdown completed.
