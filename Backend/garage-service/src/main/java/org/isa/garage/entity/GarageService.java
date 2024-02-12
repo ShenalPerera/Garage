@@ -8,7 +8,7 @@ public class GarageService {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id;
 
     @Column(name = "service_name",nullable = false)
     private String serviceName;
@@ -24,7 +24,7 @@ public class GarageService {
         this.duration = duration;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 

@@ -1,29 +1,34 @@
 package org.isa.garage.service;
 
-import org.isa.garage.controller.GarageRestController;
-import org.isa.garage.entity.TimeSlot;
-import org.isa.garage.repository.TimeSlotRepository;
+import org.isa.garage.dto.ScheduleDTO;
+import org.isa.garage.entity.Schedule;
+import org.isa.garage.repository.ScheduleRepository;
+import org.isa.garage.util.MappingUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ScheduleService {
 
     private static final Logger logger = LoggerFactory.getLogger(ScheduleService.class);
-    private final TimeSlotRepository timeSlotRepository;
+    private final ScheduleRepository scheduleRepository;
 
-    public ScheduleService(TimeSlotRepository timeSlotRepository){
-        this.timeSlotRepository = timeSlotRepository;
+    public ScheduleService(ScheduleRepository scheduleRepository){
+        this.scheduleRepository = scheduleRepository;
     }
 
-    public List<TimeSlot> testMethod(){
-        List<TimeSlot> temp =  timeSlotRepository.findByStartTimeAfterAndEndTimeBefore(Time.valueOf("10:10:00"),Time.valueOf("19:00:00"));
-        logger.info(temp.toString());
-        return temp;
-
+    public List<ScheduleDTO> getAllSchedules(LocalDate date){
+        return scheduleRepository.findALLByDateEquals(java.sql.Date.valueOf(date))
+                .stream()
+                .parallel()
+                .map(MappingUtils::mapScheduleToDTO)
+                .collect(Collectors.toList());
     }
+
 }

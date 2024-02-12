@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import org.isa.garage.dto.JWTResponseDTO;
 import org.isa.garage.dto.UserLoginDTO;
 import org.isa.garage.dto.UserSignupDTO;
-import org.isa.garage.entity.TimeSlot;
 import org.isa.garage.service.GarageServicesHandlerService;
 import org.isa.garage.service.ScheduleService;
 import org.isa.garage.service.UserService;
@@ -12,12 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 public class GarageRestController {
@@ -52,8 +48,4 @@ public class GarageRestController {
         return new ResponseEntity<>(jwtResponseDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/get-services")
-    public ResponseEntity<?> getAllServices(){
-        return new ResponseEntity<>(garageServicesHandlerService.getAllServices(),HttpStatus.OK) ;
-    }
 }

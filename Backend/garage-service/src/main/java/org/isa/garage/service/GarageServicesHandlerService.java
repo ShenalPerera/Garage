@@ -27,9 +27,7 @@ public class GarageServicesHandlerService {
     }
 
     public List<GarageServiceDTO> getAllServices() {
-        return garageServiceRepository.findAll().stream().parallel().map(garageService -> {
-            return new GarageServiceDTO(garageService.getId(), garageService.getServiceName(), garageService.getDuration());
-        }).collect(Collectors.toList());
+        return garageServiceRepository.findAll().stream().parallel().map(garageService -> new GarageServiceDTO(garageService.getId(), garageService.getServiceName(), garageService.getDuration())).collect(Collectors.toList());
     }
 
     public GarageServiceDTO createGarageService(GarageServiceDTO garageServiceDTO) {
