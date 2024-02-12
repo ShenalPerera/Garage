@@ -1,6 +1,7 @@
 package org.isa.garage.service;
 
-import org.isa.garage.dto.ServiceDTO;
+import org.isa.garage.dto.GarageServiceDTO;
+import org.isa.garage.entity.GarageService;
 import org.isa.garage.repository.GarageServiceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,13 +22,18 @@ public class GarageServicesHandlerService {
     public GarageServicesHandlerService(GarageServiceRepository garageServiceRepository){
         this.garageServiceRepository = garageServiceRepository;
     }
-    public List<ServiceDTO> getAllServices(){
+    public List<GarageServiceDTO> getAllServices(){
         return garageServiceRepository.findAll()
                 .stream().parallel()
-                .map(service -> {
-                    return new ServiceDTO(service.getId(), service.getServiceName(), service.getDuration());
+                .map(garageService -> {
+                    return new GarageServiceDTO(garageService.getId(), garageService.getServiceName(), garageService.getDuration());
                 })
                 .collect(Collectors.toList());
+    }
+
+    public GarageServiceDTO createService(GarageServiceDTO garageServiceDTO){
+      GarageService garageService =  garageServiceRepository.save(new GarageService(garageServiceDTO.getServiceName(), garageServiceDTO.getDuration()));
+      return new GarageServiceDTO(garageService.getId(), garageService.getServiceName(), garageService.getDuration());
     }
 
 }

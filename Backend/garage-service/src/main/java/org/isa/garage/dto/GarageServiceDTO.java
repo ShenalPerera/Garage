@@ -1,15 +1,20 @@
 package org.isa.garage.dto;
 
-public class ServiceDTO {
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
+public class GarageServiceDTO {
     private long id;
+    @NotBlank(message = "Service name is not valid")
     private String serviceName;
+    @Min(value = 30, message = "Duration must be greater or equal than  30 min")
     private long duration;
 
     // Constructors
-    public ServiceDTO() {
+    public GarageServiceDTO() {
     }
 
-    public ServiceDTO(long id, String serviceName, long duration) {
+    public GarageServiceDTO(long id, String serviceName, long duration) {
         this.id = id;
         this.serviceName = serviceName;
         this.duration = duration;

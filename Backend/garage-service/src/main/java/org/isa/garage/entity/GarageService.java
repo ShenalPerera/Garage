@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "service")
-public class Service {
+public class GarageService {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,10 +36,10 @@ public class Service {
         return duration;
     }
 
-    public Service() {
+    public GarageService() {
     }
 
-    public Service(String serviceName, long duration) {
+    public GarageService(String serviceName, long duration) {
         this.serviceName = serviceName;
         this.duration = duration;
     }
