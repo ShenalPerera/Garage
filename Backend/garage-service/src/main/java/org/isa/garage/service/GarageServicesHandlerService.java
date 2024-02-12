@@ -51,4 +51,9 @@ public class GarageServicesHandlerService {
         garageServiceRepository.deleteById(id);
     }
 
+    public GarageService getServiceById(Integer id){
+        Optional<GarageService> service =  garageServiceRepository.findById(id);
+
+        return service.orElseThrow(()->new GarageServiceNotFoundException("Service can not be found"));
+    }
 }

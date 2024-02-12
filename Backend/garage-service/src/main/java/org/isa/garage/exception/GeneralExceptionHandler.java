@@ -63,4 +63,14 @@ public class GeneralExceptionHandler {
 
         return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(InvalidScheduleTimesException.class)
+    public ResponseEntity<?> handleInvalidScheduleTimesException(InvalidScheduleTimesException exception){
+        UserErrorResponseDTO error = new UserErrorResponseDTO(
+                HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                exception.getMessage(),
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
 }

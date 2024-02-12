@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
-public interface ScheduleRepository extends JpaRepository<Schedule,Long> {
+public interface ScheduleRepository extends JpaRepository<Schedule,Integer> {
 
     List<Schedule> findALLByDateEquals(Date date);
 }

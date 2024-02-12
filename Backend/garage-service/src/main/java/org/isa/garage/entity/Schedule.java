@@ -30,7 +30,7 @@ public class Schedule {
 
     @ManyToMany
     @JoinTable(name = "schedule_service",
-            joinColumns = @JoinColumn(name = "id"),
+            joinColumns = @JoinColumn(name = "schedule_id"),
             inverseJoinColumns = @JoinColumn(name = "service_id"))
     private List<GarageService> garageServices;
 
