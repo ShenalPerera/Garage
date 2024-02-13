@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,5 +56,13 @@ public class GarageServicesHandlerService {
         Optional<GarageService> service =  garageServiceRepository.findById(id);
 
         return service.orElseThrow(()->new GarageServiceNotFoundException("Service can not be found"));
+    }
+
+    public List<GarageService> getServicesByIdList(List<Integer> ids){
+        return garageServiceRepository.findAllByIdIn(ids);
+    }
+
+    public Integer getMaxServiceDurationFromGivenIds(List<Integer> ids){
+        return garageServiceRepository.findMaxServiceDurationByIdIn(ids);
     }
 }
