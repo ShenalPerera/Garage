@@ -5,6 +5,5 @@ CREATE TABLE schedule (
     date DATE NOT NULL ,
     service_id INT NOT NULL ,
     max_capacity INT NOT NULL ,
-    current_capacity INT NOT NULL ,
-    FOREIGN KEY (service_id) REFERENCES service(id) ON UPDATE CASCADE ON  DELETE CASCADE
+    current_capacity INT NOT NULL
 );
