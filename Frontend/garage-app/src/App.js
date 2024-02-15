@@ -1,19 +1,25 @@
 import './App.css';
-import Header from "./Components/Header/Header";
-import LandingPage from "./Components/HomePage/LandingPage";
-import Layout from "./Components/Layout/Layout";
-import TestLayout from "./Components/Test/TestLayout";
+
+import {createBrowserRouter, RouterProvider} from "react-router-dom"
+import LandingPage from "./Pages/LandingPage";
+import RootLayout from "./Components/RootLayout/RootLayout";
+import Feed from "./Components/Feed/Feed";
+
+const router = createBrowserRouter([
+    {
+        path:'/',
+        element:<RootLayout/>,
+        children:[
+            {path:'/home', element:<LandingPage/>},
+            {path:'/feed', element:<Feed/>}
+        ]
+    }
+
+    ]
+);
 
 function App() {
-  return (
-    <>
-
-        <Layout>
-
-            <LandingPage/>
-        </Layout>
-    </>
-  );
+  return (<RouterProvider router={router}/>);
 }
 
 export default App;
