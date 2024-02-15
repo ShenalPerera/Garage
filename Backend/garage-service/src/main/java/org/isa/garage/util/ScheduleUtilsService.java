@@ -1,6 +1,7 @@
 package org.isa.garage.util;
 
 import org.isa.garage.dto.MultiServiceScheduleCreateDTO;
+import org.isa.garage.dto.ScheduleEditDTO;
 import org.isa.garage.entity.GarageService;
 import org.isa.garage.entity.Schedule;
 
@@ -35,5 +36,8 @@ public class ScheduleUtilsService {
 
     }
 
+    public static Schedule createNonRecurrentSchedule(ScheduleEditDTO scheduleEditDTO, List<GarageService> services){
+        return MappingUtils.mapScheduleEditDTOToSchedule(scheduleEditDTO,services);
+    }
 
 }

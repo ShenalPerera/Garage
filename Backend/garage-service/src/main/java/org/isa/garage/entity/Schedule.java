@@ -34,6 +34,18 @@ public class Schedule {
             inverseJoinColumns = @JoinColumn(name = "service_id"))
     private List<GarageService> garageServices;
 
+    public Schedule(Integer id, Time startTime, Time endTime, Date date, int maxCapacity, int currentCapacity, List<GarageService> garageServices) {
+        this.id = id;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.date = date;
+        this.maxCapacity = maxCapacity;
+        this.currentCapacity = currentCapacity;
+        this.garageServices = garageServices;
+    }
+
+    public Schedule() {
+    }
 
     public Integer getId() {
         return id;

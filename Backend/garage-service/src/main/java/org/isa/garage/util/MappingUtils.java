@@ -3,6 +3,7 @@ package org.isa.garage.util;
 import org.isa.garage.dto.GarageServiceDTO;
 import org.isa.garage.dto.MultiServiceScheduleCreateDTO;
 import org.isa.garage.dto.ScheduleDTO;
+import org.isa.garage.dto.ScheduleEditDTO;
 import org.isa.garage.entity.GarageService;
 import org.isa.garage.entity.Schedule;
 
@@ -31,7 +32,7 @@ public class MappingUtils {
         return scheduleDTO;
     }
 
-    public static Schedule mapMultiServiceScheduleDTOToSchedule(MultiServiceScheduleCreateDTO multiServiceScheduleCreateDTO, List<GarageService> services){
+    public static Schedule mapMultiServiceScheduleDTOToSchedule(MultiServiceScheduleCreateDTO multiServiceScheduleCreateDTO, List<GarageService> services) {
         Schedule schedule = new Schedule();
         schedule.setStartTime(multiServiceScheduleCreateDTO.getStartTime());
         schedule.setEndTime(multiServiceScheduleCreateDTO.getEndTime());
@@ -40,6 +41,17 @@ public class MappingUtils {
         schedule.setMaxCapacity(multiServiceScheduleCreateDTO.getMaxCapacity());
         schedule.setCurrentCapacity(0);
         return schedule;
+    }
+
+    public static Schedule mapScheduleEditDTOToSchedule(ScheduleEditDTO scheduleEditDTO, List<GarageService> services) {
+        return new Schedule(
+                scheduleEditDTO.getId(),
+                scheduleEditDTO.getStartTime(),
+                scheduleEditDTO.getEndTime(),
+                scheduleEditDTO.getDate(),
+                scheduleEditDTO.getMaxCapacity(), 0,
+                services
+        );
     }
 
 }

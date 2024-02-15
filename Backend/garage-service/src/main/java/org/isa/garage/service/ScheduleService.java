@@ -2,6 +2,7 @@ package org.isa.garage.service;
 
 import org.isa.garage.dto.MultiServiceScheduleCreateDTO;
 import org.isa.garage.dto.ScheduleDTO;
+import org.isa.garage.dto.ScheduleEditDTO;
 import org.isa.garage.dto.SingleServiceScheduleCreateDTO;
 import org.isa.garage.entity.GarageService;
 import org.isa.garage.entity.Schedule;
@@ -93,6 +94,27 @@ public class ScheduleService {
         }
 
     }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ScheduleDTO editSchedule(ScheduleEditDTO scheduleEditDTO){
+        validatorUtils.validateScheduleStartTimeAndEndTime(scheduleEditDTO.getStartTime(), scheduleEditDTO.getEndTime());
+        List<GarageService> services = garageServicesHandlerService.getServicesByIdList(scheduleEditDTO.getServiceId());
+
+        if (services.isEmpty()) throw new InvalidScheduleException("Services cannot be find for give schedule");
+
+        Integer maxDuration = garageServicesHandlerService.getMaxServiceDurationFromGivenIds(scheduleEditDTO.getServiceId());
+        validatorUtils.validateScheduleServices(scheduleEditDTO.getStartTime(), scheduleEditDTO.getEndTime(), maxDuration);
+        Schedule schedule = scheduleRepository.findById(scheduleEditDTO.getId()).orElseThrow(()->  new InvalidScheduleException("Schedule not found"));
+
+        schedule.setStartTime(scheduleEditDTO.getStartTime());
+        schedule.setEndTime(scheduleEditDTO.getEndTime());
+        schedule.setDate(scheduleEditDTO.getDate());
+        schedule.setMaxCapacity(scheduleEditDTO.getMaxCapacity());
+        schedule.setGarageServices(services);
+
+        return  MappingUtils.mapScheduleToDTO(scheduleRepository.save(schedule));
+    }
+
 
     public Integer getConflictSchedulesCountWithCurrentSchedule(Date creationDate, Time startTime, Time endTime) {
         return scheduleRepository.findConflictingSchedules(creationDate, startTime, endTime);

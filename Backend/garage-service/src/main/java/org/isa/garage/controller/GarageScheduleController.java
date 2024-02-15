@@ -2,6 +2,7 @@ package org.isa.garage.controller;
 
 import jakarta.validation.Valid;
 import org.isa.garage.dto.MultiServiceScheduleCreateDTO;
+import org.isa.garage.dto.ScheduleEditDTO;
 import org.isa.garage.dto.SingleServiceScheduleCreateDTO;
 import org.isa.garage.service.ScheduleService;
 import org.slf4j.Logger;
@@ -38,5 +39,10 @@ public class GarageScheduleController {
     public ResponseEntity<?> createMultiServiceSchedule(@Valid @RequestBody MultiServiceScheduleCreateDTO multiServiceScheduleCreateDTO){
         logger.info(multiServiceScheduleCreateDTO.toString());
         return new ResponseEntity<>("{\"count\":" + scheduleService.createMultiServiceSchedule(multiServiceScheduleCreateDTO)+"}",HttpStatus.CREATED);
+    }
+
+    @PutMapping("/edit-schedule")
+    public ResponseEntity<?> editSchedule(@Valid @RequestBody ScheduleEditDTO scheduleEditDTO){
+        return new ResponseEntity<>(scheduleService.editSchedule(scheduleEditDTO),HttpStatus.CREATED);
     }
 }
