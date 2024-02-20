@@ -12,7 +12,7 @@ import {
     FormControlLabel,
     Grid,
     InputLabel,
-    MenuItem,
+    MenuItem, OutlinedInput,
     Paper,
     Select,
     TextField
@@ -75,7 +75,8 @@ function Schedules() {
             startTime: startTime,
             endTime: endTime,
             repeat: false,
-            services: [...schedule.garageServices]
+            services: schedule.garageServices.map(service => service.id)
+
         });
         setOpen(true);
         setIsEditMode(true);
@@ -142,13 +143,15 @@ function Schedules() {
         if (validateForm(formData) === null) {
 
             formData["date"] = dayjs(formData["date"]).format('YYYY-MM-DD');
-            formData["startTime"] = dayjs(formData["startTime"]).format('HH:MM:00');
-            formData["endTime"] = dayjs(formData["endTime"]).format('HH:MM:00');
-            formData['serviceId'] = []
-            formData['services'].forEach(service => {
-                formData['serviceId'].push(service.id);
-            });
 
+            let startTime = dayjs(formData["startTime"]).format('HH:mm');
+            formData["startTime"] = startTime.length === 5 ? startTime + ':00' : startTime;
+
+            let endTime = dayjs(formData["endTime"]).format('HH:mm');
+            formData["endTime"] = endTime.length === 5 ? endTime + ':00' : endTime;
+
+            formData['serviceId'] = formData.services;
+            console.log(formData);
             try {
                 if (!isEditMode){
                     const data = await postWithAuth(formData, 'schedule/create-multi-service-schedule');
@@ -280,18 +283,26 @@ function Schedules() {
                                         name='services'
                                         multiple
                                         value={formData.services}
+                                        input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
                                         onChange={handleOnChange}
-                                        renderValue={(selected) => (<Box sx={{
+                                        renderValue={(selected) => (
+                                            <Box sx={{
                                                 display: 'flex',
-                                                flexDirection: "column",
                                                 flexWrap: 'wrap',
                                                 gap: 0.5
-                                            }}>
-                                                {selected.map((value) => (<Chip key={value.id}
-                                                                                label={servicesData.find(service => service.id === value.id).serviceName}/>))}
+                                                }}
+                                            >
+                                                {selected.map((value) => (
+                                                    <Chip
+                                                        key={value}
+                                                        label={servicesData.find(service => service.id === value).serviceName}/>))}
                                             </Box>)}
+
                                     >
-                                        {servicesData.map((service) => (<MenuItem key={service.id} value={service}>
+                                        {servicesData.map((service) => (
+                                            <MenuItem
+                                                key={service.id}
+                                                value={service.id}>
                                                 {service.serviceName}
                                             </MenuItem>))}
                                     </Select>
