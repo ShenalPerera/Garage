@@ -27,7 +27,8 @@ public class MappingUtils {
         scheduleDTO.setMaxCapacity(schedule.getMaxCapacity());
         scheduleDTO.setCurrentCapacity(schedule.getCurrentCapacity());
 
-        scheduleDTO.setGarageServices(schedule.getGarageServices().stream().parallel().map(MappingUtils::mapServiceToDTO).collect(Collectors.toList()));
+        List<GarageServiceDTO> services = schedule.getGarageServices().stream().map(MappingUtils::mapServiceToDTO).toList();
+        scheduleDTO.setGarageServices(services);
 
         return scheduleDTO;
     }

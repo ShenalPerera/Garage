@@ -17,6 +17,7 @@ import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/schedule")
+@CrossOrigin
 public class GarageScheduleController {
     private static final Logger logger = LoggerFactory.getLogger(GarageScheduleController.class);
     private final ScheduleService scheduleService;

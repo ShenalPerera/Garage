@@ -1,12 +1,9 @@
-import React, {Component} from 'react';
-
+import React, {Component, useState} from 'react';
+import AuthForm from "../Components/Authentication/AuthForm";
+import {redirect} from "react-router-dom";
 class AuthPage extends Component {
     render() {
-        return (
-            <div>
-                
-            </div>
-        );
+        return (<AuthForm/> );
     }
 }
 

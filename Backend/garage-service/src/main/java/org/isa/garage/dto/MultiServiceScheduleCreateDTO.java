@@ -18,8 +18,8 @@ public class MultiServiceScheduleCreateDTO {
     private Date date;
     @NotNull(message = "Service IDs not found")
     private List<Integer> serviceId;
-    @NotNull(message = "Max capacity is not found")
-    @Min(value = 1, message = "Max capacity should have value greater than 0")
+//    @NotNull(message = "Max capacity is not found")
+//    @Min(value = 1, message = "Max capacity should have value greater than 0")
     private int maxCapacity;
     private Boolean isRecurrent;
     private Integer period;

@@ -11,11 +11,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
+@CrossOrigin
 public class GarageUserController {
     private static final Logger logger = LoggerFactory.getLogger(GarageUserController.class);
 
@@ -35,7 +40,11 @@ public class GarageUserController {
     public ResponseEntity<?> signup(@Valid @RequestBody UserSignupDTO userSignupDTO) {
         logger.info("Signup user {}", userSignupDTO.getFirstname());
         boolean created = userService.saveUser(userSignupDTO);
-        if (created) return ResponseEntity.status(HttpStatus.CREATED).body("User created");
+        if (created) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "User created");
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        }
         else return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 

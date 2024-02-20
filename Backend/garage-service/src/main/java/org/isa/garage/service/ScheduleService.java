@@ -37,8 +37,9 @@ public class ScheduleService {
         this.validatorUtils = validatorUtils;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public List<ScheduleDTO> getAllSchedules(LocalDate date) {
-        return scheduleRepository.findALLByDateEquals(java.sql.Date.valueOf(date)).stream().parallel().map(MappingUtils::mapScheduleToDTO).collect(Collectors.toList());
+        return scheduleRepository.findALLByDateEquals(java.sql.Date.valueOf(date)).stream().map(MappingUtils::mapScheduleToDTO).collect(Collectors.toList());
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

@@ -1,25 +1,31 @@
 import './App.css';
 
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
-import LandingPage from "./Pages/LandingPage";
-import RootLayout from "./Components/RootLayout/RootLayout";
-import Feed from "./Components/Feed/Feed";
+import RootLayout from "./Components/Layout/RootLayout";
+import AuthPage from "./Pages/AuthPage";
+import ErrorPage from "./Pages/ErrorPage";
+import HomeLayout from "./Components/Layout/HomeLayout";
+import Schedules, {loader as schedulesLoader} from "./Components/Schedules/Schedules";
 
-const router = createBrowserRouter([
-    {
-        path:'/',
-        element:<RootLayout/>,
-        children:[
-            {path:'/home', element:<LandingPage/>},
-            {path:'/feed', element:<Feed/>}
-        ]
-    }
+const router = createBrowserRouter([{
+    path: '/',
+    element: <RootLayout/>,
+    errorElement: <ErrorPage/>,
+    children: [{path: '/auth/:mode', element: <AuthPage/>},
 
-    ]
-);
+        {
+            path: '/',
+            element: <HomeLayout/>,
+            children: [
+                {path: 'schedules', element: <Schedules/>, loader: schedulesLoader},
+            ]
+        }]
+}
+
+]);
 
 function App() {
-  return (<RouterProvider router={router}/>);
+    return (<RouterProvider router={router}/>);
 }
 
 export default App;
