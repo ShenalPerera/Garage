@@ -71,3 +71,13 @@ export const getWithAuth = async (path,params= {}) =>{
         throw e;
     }
 }
+
+export const deleteWithAuth = async (path,params={}) => {
+  try {
+      const response = await instance.delete(`${BASE_URL}/`+path,{params});
+      return response.data;
+  }
+  catch (e) {
+      throw e;
+  }
+}

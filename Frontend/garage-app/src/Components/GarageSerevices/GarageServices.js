@@ -12,7 +12,13 @@ import {
     ThemeProvider
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {alertActions, createGarageService, editGarageService, fetchGarageServices} from "../../Store";
+import {
+    alertActions,
+    createGarageService,
+    deleteGarageService,
+    editGarageService,
+    fetchGarageServices
+} from "../../Store";
 import GarageServiceDetails from "./GarageServiceDetails/GarageServiceDetails";
 import {Add} from "@mui/icons-material";
 
@@ -63,6 +69,11 @@ const GarageServices = () => {
         setFormData(resetFormData);
         setIsEditing(false);
     }
+
+    const handleOnDelete = async ()=>{
+        await dispatch(deleteGarageService(selectedService.id));
+        setSelectedService(null);
+    }
     const handleSubmit = async (event)=>{
         event.preventDefault();
 
@@ -81,6 +92,7 @@ const GarageServices = () => {
                 await dispatch(createGarageService(formData));
 
             setIsEditing(false);
+            setOpen(false);
             setFormData(resetFormData);
         }
     }
@@ -90,7 +102,7 @@ const GarageServices = () => {
             <ThemeProvider theme={darkTheme}>
                 {selectedService !== null &&
                     (
-                        <GarageServiceDetails service={selectedService} onClose={handleCloseSelectedService} onEdit={handleOnClickEdit}/>
+                        <GarageServiceDetails service={selectedService} onClose={handleCloseSelectedService} onEdit={handleOnClickEdit} onDelete={handleOnDelete}/>
                 )}
                 <TableContainer component={Paper}>
                     {services.length > 0 ? (

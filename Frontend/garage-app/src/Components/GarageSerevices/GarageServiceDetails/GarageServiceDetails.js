@@ -10,7 +10,7 @@ const darkTheme = createTheme({
 });
 
 
-const GarageServiceDetails = ({service,onClose,onEdit}) => {
+const GarageServiceDetails = ({service,onClose,onEdit,onDelete}) => {
 
 
 
@@ -35,7 +35,7 @@ const GarageServiceDetails = ({service,onClose,onEdit}) => {
                     <Button variant="contained" color="primary" onClick={onEdit}>
                         Edit
                     </Button>
-                    <Button variant="contained" color="secondary" >
+                    <Button variant="contained" color="secondary" onClick={onDelete}>
                         Delete
                     </Button>
                 </Box>

@@ -9,6 +9,7 @@ import Schedules, {loader as schedulesLoader} from "./Components/Schedules/Sched
 import GarageServices from "./Components/GarageSerevices/GarageServices";
 import GarageServiceDetails from "./Components/GarageSerevices/GarageServiceDetails/GarageServiceDetails";
 
+
 const router = createBrowserRouter([{
     path: '/',
     element: <RootLayout/>,
@@ -20,8 +21,7 @@ const router = createBrowserRouter([{
             element: <HomeLayout/>,
             children: [
                 {path: 'schedules', element: <Schedules/>, loader: schedulesLoader},
-                {path: 'services',element:<GarageServices/>},
-                {path: 'services/:id',element:<GarageServiceDetails/>}
+                {path: 'services',element:<GarageServices/>}
             ]
         }]
 }
