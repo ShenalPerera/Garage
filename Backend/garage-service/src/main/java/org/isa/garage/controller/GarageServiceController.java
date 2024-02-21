@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/service")
+@CrossOrigin
 public class GarageServiceController {
     private static final Logger logger = LoggerFactory.getLogger(GarageServiceController.class);
 
