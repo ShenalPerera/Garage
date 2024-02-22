@@ -43,6 +43,7 @@ public class SecurityConfig {
                         configurer -> configurer
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/signup").permitAll()
+                                .requestMatchers("/bookings/mock-send-booking").permitAll()
                                 .anyRequest()
                                 .authenticated()
 

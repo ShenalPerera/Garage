@@ -1,6 +1,8 @@
 package org.isa.garage.controller;
 
 import jakarta.validation.Valid;
+import org.isa.garage.config.KafkaProducer;
+import org.isa.garage.dto.BookingConfirmDTO;
 import org.isa.garage.dto.JWTResponseDTO;
 import org.isa.garage.dto.UserLoginDTO;
 import org.isa.garage.dto.UserSignupDTO;
@@ -11,10 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,16 +24,17 @@ import java.util.Map;
 public class GarageUserController {
     private static final Logger logger = LoggerFactory.getLogger(GarageUserController.class);
 
-
+    private final KafkaTemplate<String,BookingConfirmDTO> kafkaTemplate;
     private final UserService userService;
 
     private final ScheduleService scheduleService;
 
     private final GarageServicesHandlerService garageServicesHandlerService;
-    public GarageUserController(UserService userService, ScheduleService scheduleService, GarageServicesHandlerService garageServicesHandlerService) {
+    public GarageUserController(UserService userService, ScheduleService scheduleService, GarageServicesHandlerService garageServicesHandlerService,KafkaTemplate<String,BookingConfirmDTO> kafkaTemplate) {
         this.userService = userService;
         this.scheduleService = scheduleService;
         this.garageServicesHandlerService = garageServicesHandlerService;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     @PostMapping("/signup")

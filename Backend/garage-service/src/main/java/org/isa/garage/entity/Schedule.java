@@ -34,6 +34,8 @@ public class Schedule {
             inverseJoinColumns = @JoinColumn(name = "service_id"))
     private List<GarageService> garageServices;
 
+    @OneToMany(mappedBy = "schedule")
+    private List<Booking> bookings;
     public Schedule(Integer id, Time startTime, Time endTime, Date date, int maxCapacity, int currentCapacity, List<GarageService> garageServices) {
         this.id = id;
         this.startTime = startTime;
@@ -101,6 +103,14 @@ public class Schedule {
 
     public void setGarageServices(List<GarageService> garageServices) {
         this.garageServices = garageServices;
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
     }
 
     @Override
