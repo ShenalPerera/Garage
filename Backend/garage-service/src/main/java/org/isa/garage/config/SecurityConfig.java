@@ -1,6 +1,7 @@
 package org.isa.garage.config;
 
 import org.isa.garage.filter.JWTFilter;
+import org.isa.garage.filter.JwtAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,10 +28,13 @@ public class SecurityConfig {
 
     private final GarageUserDetailsService garageUserDetailsService;
     private final JWTFilter jwtFilter;
+
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     @Autowired
-    public SecurityConfig(GarageUserDetailsService garageUserDetailsService,JWTFilter jwtFilter) {
+    public SecurityConfig(GarageUserDetailsService garageUserDetailsService,JWTFilter jwtFilter,JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
         this.garageUserDetailsService = garageUserDetailsService;
         this.jwtFilter = jwtFilter;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
     }
 
     @Bean
@@ -39,11 +43,13 @@ public class SecurityConfig {
 
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionPolicy -> sessionPolicy.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exceptionHandlingConfigurer -> exceptionHandlingConfigurer.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .authorizeHttpRequests(
                         configurer -> configurer
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/signup").permitAll()
                                 .requestMatchers("/bookings/mock-send-booking").permitAll()
+                                .requestMatchers("/get-counts").permitAll()
                                 .anyRequest()
                                 .authenticated()
 

@@ -44,5 +44,14 @@ public class GarageServiceDTO {
     public void setDuration(long duration) {
         this.duration = duration;
     }
+
+    @Override
+    public String toString() {
+        return "GarageServiceDTO{" +
+                "id=" + id +
+                ", serviceName='" + serviceName + '\'' +
+                ", duration=" + duration +
+                '}';
+    }
 }
 

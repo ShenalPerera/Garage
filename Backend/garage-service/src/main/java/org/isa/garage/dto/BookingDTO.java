@@ -1,37 +1,18 @@
-package org.isa.garage.entity;
+package org.isa.garage.dto;
 
-import jakarta.persistence.*;
+import org.isa.garage.entity.BookingStatus;
 
 import java.sql.Date;
 import java.sql.Time;
 
-@Entity
-@Table(name = "booking")
-public class Booking {
+public class BookingDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_id")
     private Integer bookingId;
-
-    @Column(name = "customer_name")
     private String customerName;
-
-    @Column(name = "vehicle_type")
     private String vehicleType;
-
-    @ManyToOne
-    @JoinColumn(name = "schedule_id", nullable = false)
-    private Schedule schedule;
-
-    @Column(name = "booking_date")
+    private Integer scheduleId;
     private Date bookingDate;
-
-    @Column(name = "booking_time")
     private Time bookingTime;
-
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "enum('PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELED') default 'pending'")
     private BookingStatus status;
 
     // getters and setters
@@ -60,12 +41,12 @@ public class Booking {
         this.vehicleType = vehicleType;
     }
 
-    public Schedule getSchedule() {
-        return schedule;
+    public Integer getScheduleId() {
+        return scheduleId;
     }
 
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
+    public void setScheduleId(Integer scheduleId) {
+        this.scheduleId = scheduleId;
     }
 
     public Date getBookingDate() {
@@ -90,5 +71,18 @@ public class Booking {
 
     public void setStatus(BookingStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "BookingDTO{" +
+                "bookingId=" + bookingId +
+                ", customerName='" + customerName + '\'' +
+                ", vehicleType='" + vehicleType + '\'' +
+                ", scheduleId=" + scheduleId +
+                ", bookingDate=" + bookingDate +
+                ", bookingTime=" + bookingTime +
+                ", status=" + status +
+                '}';
     }
 }

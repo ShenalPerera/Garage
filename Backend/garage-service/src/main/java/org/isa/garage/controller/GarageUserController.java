@@ -1,8 +1,7 @@
 package org.isa.garage.controller;
 
 import jakarta.validation.Valid;
-import org.isa.garage.config.KafkaProducer;
-import org.isa.garage.dto.BookingConfirmDTO;
+import org.isa.garage.dto.BookingStatusDTO;
 import org.isa.garage.dto.JWTResponseDTO;
 import org.isa.garage.dto.UserLoginDTO;
 import org.isa.garage.dto.UserSignupDTO;
@@ -24,13 +23,13 @@ import java.util.Map;
 public class GarageUserController {
     private static final Logger logger = LoggerFactory.getLogger(GarageUserController.class);
 
-    private final KafkaTemplate<String,BookingConfirmDTO> kafkaTemplate;
+    private final KafkaTemplate<String, BookingStatusDTO> kafkaTemplate;
     private final UserService userService;
 
     private final ScheduleService scheduleService;
 
     private final GarageServicesHandlerService garageServicesHandlerService;
-    public GarageUserController(UserService userService, ScheduleService scheduleService, GarageServicesHandlerService garageServicesHandlerService,KafkaTemplate<String,BookingConfirmDTO> kafkaTemplate) {
+    public GarageUserController(UserService userService, ScheduleService scheduleService, GarageServicesHandlerService garageServicesHandlerService,KafkaTemplate<String, BookingStatusDTO> kafkaTemplate) {
         this.userService = userService;
         this.scheduleService = scheduleService;
         this.garageServicesHandlerService = garageServicesHandlerService;

@@ -1,9 +1,7 @@
 package org.isa.garage.service;
 
-import org.isa.garage.dto.MultiServiceScheduleCreateDTO;
-import org.isa.garage.dto.ScheduleDTO;
-import org.isa.garage.dto.ScheduleEditDTO;
-import org.isa.garage.dto.SingleServiceScheduleCreateDTO;
+import org.isa.garage.dto.*;
+import org.isa.garage.entity.Booking;
 import org.isa.garage.entity.GarageService;
 import org.isa.garage.entity.Schedule;
 import org.isa.garage.exception.InvalidScheduleException;
@@ -30,11 +28,16 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final GarageServicesHandlerService garageServicesHandlerService;
     private final ValidatorUtils validatorUtils;
+    private final BookingService bookingService;
 
-    public ScheduleService(ScheduleRepository scheduleRepository, GarageServicesHandlerService garageServicesHandlerService, ValidatorUtils validatorUtils) {
+    private final KafkaProducerService kafkaProducerService;
+
+    public ScheduleService(ScheduleRepository scheduleRepository, GarageServicesHandlerService garageServicesHandlerService, ValidatorUtils validatorUtils, BookingService bookingService,KafkaProducerService kafkaProducerService) {
         this.scheduleRepository = scheduleRepository;
         this.garageServicesHandlerService = garageServicesHandlerService;
         this.validatorUtils = validatorUtils;
+        this.bookingService = bookingService;
+        this.kafkaProducerService = kafkaProducerService;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -86,11 +89,14 @@ public class ScheduleService {
 
         if (null != multiServiceScheduleCreateDTO.getIsRecurrent() && multiServiceScheduleCreateDTO.getIsRecurrent()) {
             List<Schedule> schedules = ScheduleUtilsService.createRecurrentSchedules(multiServiceScheduleCreateDTO, services);
-            scheduleRepository.saveAll(schedules);
+            List<Schedule> createdSchedules =  scheduleRepository.saveAll(schedules);
+            List<ScheduleDTO>  scheduleDTOS = createdSchedules.stream().map(MappingUtils::mapScheduleToDTO).collect(Collectors.toList());
+            kafkaProducerService.sendCreatedSchedules(scheduleDTOS);
             return schedules.size();
         } else {
             Schedule schedule = ScheduleUtilsService.createNoneRecurrentSchedule(multiServiceScheduleCreateDTO, services);
-            scheduleRepository.save(schedule);
+            ScheduleDTO scheduleDTO= MappingUtils.mapScheduleToDTO(scheduleRepository.save(schedule)) ;
+            kafkaProducerService.sendCreatedSchedules(List.of(scheduleDTO));
             return 1;
         }
 
@@ -98,10 +104,14 @@ public class ScheduleService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public ScheduleDTO editSchedule(ScheduleEditDTO scheduleEditDTO){
+        List<BookingDTO> bookings = bookingService.getBookingsByScheduleID(scheduleEditDTO.getId());
+        if (!bookings.isEmpty())
+            throw new InvalidScheduleException("Schedule have bookings. Can not edit");
+
         validatorUtils.validateScheduleStartTimeAndEndTime(scheduleEditDTO.getStartTime(), scheduleEditDTO.getEndTime());
         List<GarageService> services = garageServicesHandlerService.getServicesByIdList(scheduleEditDTO.getServiceId());
 
-        if (services.isEmpty()) throw new InvalidScheduleException("Services cannot be find for give schedule");
+        if (services.isEmpty()) throw new InvalidScheduleException("Services cannot be find for given schedule");
 
         Integer maxDuration = garageServicesHandlerService.getMaxServiceDurationFromGivenIds(scheduleEditDTO.getServiceId());
         validatorUtils.validateScheduleServices(scheduleEditDTO.getStartTime(), scheduleEditDTO.getEndTime(), maxDuration);
@@ -113,11 +123,28 @@ public class ScheduleService {
         schedule.setMaxCapacity(scheduleEditDTO.getMaxCapacity());
         schedule.setGarageServices(services);
 
-        return  MappingUtils.mapScheduleToDTO(scheduleRepository.save(schedule));
+        ScheduleDTO scheduleDTO =  MappingUtils.mapScheduleToDTO(scheduleRepository.save(schedule));
+        kafkaProducerService.sendEditSchedule(scheduleDTO);
+        return scheduleDTO;
     }
 
+    public void deleteSchedule(Integer scheduleId){
+        Schedule  schedule = scheduleRepository.findById(scheduleId).orElseThrow(()->new InvalidScheduleException("Schedule Not found!"));
+        if (!schedule.getBookings().isEmpty())
+            throw new InvalidScheduleException("Schedule have booking. Can not delete!");
+        for(GarageService garageService: schedule.getGarageServices()){
+            garageService.getSchedules().remove(schedule);
+        }
+        schedule.getGarageServices().clear();
+        scheduleRepository.delete(schedule);
+        kafkaProducerService.sendDeleteSchedule(MappingUtils.mapScheduleToDTO(schedule));
+    }
 
     public Integer getConflictSchedulesCountWithCurrentSchedule(Date creationDate, Time startTime, Time endTime) {
         return scheduleRepository.findConflictingSchedules(creationDate, startTime, endTime);
+    }
+
+    public Long getCount(){
+        return scheduleRepository.count();
     }
 }

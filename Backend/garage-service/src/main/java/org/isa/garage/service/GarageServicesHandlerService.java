@@ -3,6 +3,8 @@ package org.isa.garage.service;
 import org.isa.garage.dto.GarageServiceDTO;
 import org.isa.garage.dto.GarageServiceUpdateDTO;
 import org.isa.garage.entity.GarageService;
+import org.isa.garage.entity.Schedule;
+import org.isa.garage.exception.GarageServiceException;
 import org.isa.garage.exception.GarageServiceNotFoundException;
 import org.isa.garage.repository.GarageServiceRepository;
 import org.slf4j.Logger;
@@ -38,7 +40,11 @@ public class GarageServicesHandlerService {
 
     public GarageServiceDTO editGarageService(GarageServiceUpdateDTO garageServiceUpdateDTO) {
         Optional<GarageService> garageServiceOptional = garageServiceRepository.findById(garageServiceUpdateDTO.getId());
+
         GarageService garageService = garageServiceOptional.orElseThrow(() -> new GarageServiceNotFoundException("No service found with id:" + garageServiceUpdateDTO.getId()));
+
+        if (!garageService.getSchedules().isEmpty())
+            throw new GarageServiceException("This Service is attached with a schedule!");
 
         garageService.setServiceName(garageServiceUpdateDTO.getServiceName());
         garageService.setDuration(garageServiceUpdateDTO.getDuration());
@@ -49,6 +55,9 @@ public class GarageServicesHandlerService {
     }
 
     public void deleteGarageService(Integer id){
+        GarageService garageService = garageServiceRepository.findById(id).orElseThrow(()-> new GarageServiceException("Service not found!"));
+        if (!garageService.getSchedules().isEmpty())
+            throw new GarageServiceException("This Service is attached with a schedule!");
         garageServiceRepository.deleteById(id);
     }
 
@@ -65,4 +74,9 @@ public class GarageServicesHandlerService {
     public Integer getMaxServiceDurationFromGivenIds(List<Integer> ids){
         return garageServiceRepository.findMaxServiceDurationByIdIn(ids);
     }
+
+    public Long getCount(){
+        return garageServiceRepository.count();
+    }
+
 }

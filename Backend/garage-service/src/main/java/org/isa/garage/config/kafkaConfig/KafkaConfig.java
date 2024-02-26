@@ -1,4 +1,4 @@
-package org.isa.garage.config;
+package org.isa.garage.config.kafkaConfig;
 
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -16,23 +16,45 @@ public class KafkaConfig {
     private String bootstrapServers;
 
     @Bean
-    public NewTopic topic2() {
-        if (!topicExists()) {
-            return TopicBuilder
-                    .name("BOOKING_CREATE")
-                    .build();
-        }
-        System.out.println("Topic already exists " + "TopicsNames.BOOKED_TIME_SLOTS");
-        return null;
+    public NewTopic bookingCreate() {
+        return createTopicIfNotExists(KafkaTopics.BOOKING_CREATE);
+    }
+    @Bean
+    public NewTopic bookingStatus(){
+        return createTopicIfNotExists(KafkaTopics.BOOKING_STATUS);
+    }
+    @Bean
+    public NewTopic schedulesCreate(){
+        return createTopicIfNotExists(KafkaTopics.SCHEDULES_CREATE);
     }
 
-    private boolean topicExists() {
+    @Bean
+    public NewTopic scheduleDelete(){
+        return createTopicIfNotExists(KafkaTopics.SCHEDULE_DELETE);
+    }
+
+    @Bean
+    public NewTopic scheduleEdit(){
+        return createTopicIfNotExists(KafkaTopics.SCHEDULE_EDIT);
+    }
+
+    private boolean topicExists(String topicName) {
         try (AdminClient adminClient = AdminClient.create(Map.of("bootstrap.servers", bootstrapServers))) {
-            return adminClient.listTopics().names().get().contains("BOOKING_CREATE");
+            return adminClient.listTopics().names().get().contains(topicName);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
+
+    private NewTopic createTopicIfNotExists(String topicName) {
+        if (!topicExists(topicName)) {
+            return TopicBuilder
+                    .name(topicName)
+                    .build();
+        }
+        System.out.println("Topic already exists " + topicName);
+        return null;
+    }
 }

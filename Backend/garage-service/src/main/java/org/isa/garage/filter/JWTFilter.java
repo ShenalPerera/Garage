@@ -7,8 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.isa.garage.config.GarageUserDetails;
 import org.isa.garage.config.GarageUserDetailsService;
+import org.isa.garage.exception.GarageJWTException;
 import org.isa.garage.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,10 +27,12 @@ public class JWTFilter extends OncePerRequestFilter {
     private final JwtTokenUtil jwtTokenUtil;
     private final GarageUserDetailsService garageUserDetailsService;
 
+    private final JWTExceptionService jwtExceptionService;
     @Autowired
-    public JWTFilter(JwtTokenUtil jwtTokenUtil, GarageUserDetailsService garageUserDetailsService) {
+    public JWTFilter(JwtTokenUtil jwtTokenUtil, GarageUserDetailsService garageUserDetailsService, JWTExceptionService jwtExceptionService) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.garageUserDetailsService = garageUserDetailsService;
+        this.jwtExceptionService = jwtExceptionService;
     }
 
     @Override
@@ -41,8 +46,8 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         String token = header.substring(7);
-        Claims claims = jwtTokenUtil.validateToken(token);
 
+        Claims claims = jwtTokenUtil.validateToken(token);
         if (!claims.isEmpty()) {
             GarageUserDetails garageUserDetails = this.garageUserDetailsService.loadUserByUsername(claims.get("email", String.class));
             UsernamePasswordAuthenticationToken userAuthToken = new UsernamePasswordAuthenticationToken(garageUserDetails, null, null);
@@ -52,5 +57,10 @@ public class JWTFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(userAuthToken);
         }
         filterChain.doFilter(request, response);
+
+
+
+
+
     }
 }

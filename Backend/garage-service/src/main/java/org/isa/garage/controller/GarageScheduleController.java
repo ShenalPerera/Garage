@@ -46,4 +46,10 @@ public class GarageScheduleController {
     public ResponseEntity<?> editSchedule(@Valid @RequestBody ScheduleEditDTO scheduleEditDTO){
         return new ResponseEntity<>(scheduleService.editSchedule(scheduleEditDTO),HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/delete-schedule/{id}")
+    public ResponseEntity<?> deleteSchedule(@PathVariable Integer id){
+        scheduleService.deleteSchedule(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

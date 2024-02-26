@@ -1,9 +1,7 @@
 package org.isa.garage.util;
 
-import org.isa.garage.dto.GarageServiceDTO;
-import org.isa.garage.dto.MultiServiceScheduleCreateDTO;
-import org.isa.garage.dto.ScheduleDTO;
-import org.isa.garage.dto.ScheduleEditDTO;
+import org.isa.garage.dto.*;
+import org.isa.garage.entity.Booking;
 import org.isa.garage.entity.GarageService;
 import org.isa.garage.entity.Schedule;
 
@@ -55,4 +53,21 @@ public class MappingUtils {
         );
     }
 
+    public static BookingDTO mapBookingToDTO(Booking booking) {
+        BookingDTO bookingDTO = new BookingDTO();
+
+        bookingDTO.setBookingId(booking.getBookingId());
+        bookingDTO.setCustomerName(booking.getCustomerName());
+        bookingDTO.setVehicleType(booking.getVehicleType());
+        bookingDTO.setScheduleId(booking.getSchedule().getId());
+        bookingDTO.setBookingDate(booking.getBookingDate());
+        bookingDTO.setBookingTime(booking.getBookingTime());
+        bookingDTO.setStatus(booking.getStatus());
+
+        return bookingDTO;
+    }
+
+    public static List<BookingDTO> mapBookingsToDTOs(List<Booking> bookings){
+        return bookings.stream().map(MappingUtils::mapBookingToDTO).collect(Collectors.toList());
+    }
 }

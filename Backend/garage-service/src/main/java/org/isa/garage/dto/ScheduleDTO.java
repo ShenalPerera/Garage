@@ -81,4 +81,17 @@ public class ScheduleDTO {
     public void setGarageServices(List<GarageServiceDTO> garageServices) {
         this.garageServices = garageServices;
     }
+
+    @Override
+    public String toString() {
+        return "ScheduleDTO{" +
+                "id=" + id +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", date=" + date +
+                ", maxCapacity=" + maxCapacity +
+                ", currentCapacity=" + currentCapacity +
+                ", garageServices=" + garageServices +
+                '}';
+    }
 }

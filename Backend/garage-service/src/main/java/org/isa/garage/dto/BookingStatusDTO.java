@@ -1,10 +1,10 @@
 package org.isa.garage.dto;
 
-public class BookingConfirmDTO {
+public class BookingStatusDTO {
     private int bookingID;
     private boolean status;
 
-    public BookingConfirmDTO(int bookingID, boolean status) {
+    public BookingStatusDTO(int bookingID, boolean status) {
         this.bookingID = bookingID;
         this.status = status;
     }

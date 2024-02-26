@@ -7,11 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class GarageApplicationTests {
-	@Autowired
-	private UserService userService;
-	@Test
-	void contextLoads() {
-	}
+
 
 
 }

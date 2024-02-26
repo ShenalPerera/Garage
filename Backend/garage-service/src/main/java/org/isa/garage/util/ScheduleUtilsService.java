@@ -19,6 +19,7 @@ public class ScheduleUtilsService {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startDate);
+        calendar.add(Calendar.DAY_OF_MONTH,-1);
 
         for (int i = 0; i < multiServiceScheduleCreateDTO.getPeriod(); i++) {
             calendar.add(Calendar.DAY_OF_MONTH,1);
