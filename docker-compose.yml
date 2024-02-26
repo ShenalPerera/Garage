@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  garage-service:
+    build: ./Backend/garage-service
+    ports:
+      - "8080:8080"
+    networks:
+      - my_network
+
+  garage-frontend:
+    build: ./Frontend/garage-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - garage-service
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
