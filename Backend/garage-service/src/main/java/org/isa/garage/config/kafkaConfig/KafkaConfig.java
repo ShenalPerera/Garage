@@ -17,7 +17,7 @@ public class KafkaConfig {
 
     @Bean
     public NewTopic topic2() {
-        if (!topicExists("BOOKING_CREATE")) {
+        if (!topicExists()) {
             return TopicBuilder
                     .name("BOOKING_CREATE")
                     .build();
@@ -26,9 +26,9 @@ public class KafkaConfig {
         return null;
     }
 
-    private boolean topicExists(String topicName) {
+    private boolean topicExists() {
         try (AdminClient adminClient = AdminClient.create(Map.of("bootstrap.servers", bootstrapServers))) {
-            return adminClient.listTopics().names().get().contains(topicName);
+            return adminClient.listTopics().names().get().contains("BOOKING_CREATE");
         } catch (Exception e) {
             e.printStackTrace();
             return false;

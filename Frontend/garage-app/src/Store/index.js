@@ -14,7 +14,7 @@ const alertSlice = createSlice({
 });
 
 
-const initialAuthenticatedStatus = {isLoggedIn: true};
+const initialAuthenticatedStatus = {isLoggedIn: false};
 
 const authenticateSlice = createSlice({
     name: 'authenticate', initialState: initialAuthenticatedStatus, reducers: {
@@ -35,6 +35,13 @@ export const fetchGarageServices = createAsyncThunk('garageService/fetchServices
         thunkAPI.dispatch(alertActions.setAlert({message: 'Fetched with latest services', severity: 'success'}))
         return services;
     } catch (e) {
+        if (e.response.status === 401){
+            const error = new Error();
+            error.message = e.response.data.message;
+
+            throw error;
+        }
+
         thunkAPI.dispatch(alertActions.setAlert({message: e.message, severity: 'error'}))
     }
 });
@@ -55,8 +62,21 @@ export const editGarageService = createAsyncThunk('garageService/editGarageServi
             result = {services, editedService: null};
         }
         return result;
-    } catch (e) {
-        thunkAPI.dispatch(alertActions.setAlert({message: e.message, severity: 'error'}))
+    }
+    catch (e) {
+        if (e.response.data){
+            if (e.response.status === 401){
+
+                return thunkAPI.rejectWithValue({message:e.response.data.message, status:401});
+            }
+            else if (e.response.data.status){
+                return thunkAPI.rejectWithValue({message:e.response.data.message, status:e.response.data.status});
+            }
+            else{
+                thunkAPI.dispatch(alertActions.setAlert({message:"Error occurred!",severity:'error'}));
+            }
+        }
+        thunkAPI.dispatch(alertActions.setAlert({message:"Error occurred!",severity:'error'}))
     }
 
 })
@@ -68,7 +88,17 @@ export const deleteGarageService = createAsyncThunk('garageService/deleteGarageS
         thunkAPI.dispatch(alertActions.setAlert({message: 'Service deleted Successfully', severity: 'success'}));
         return await getWithAuth('service/get-services');
     } catch (e) {
-        thunkAPI.dispatch(alertActions.setAlert({message: e.message, severity: 'error'}))
+        if (e.response.data){
+
+            if (e.response.status === 401){
+
+                return thunkAPI.rejectWithValue({message:e.response.data.message, status:401});
+            }
+            else if (e.response.data.status){
+                return thunkAPI.rejectWithValue({message:e.response.data.message, status:e.response.data.status});
+            }
+        }
+        thunkAPI.dispatch(alertActions.setAlert({message:"Error occurred!",severity:'error'}))
     }
 })
 
@@ -85,7 +115,17 @@ export const createGarageService = createAsyncThunk('garageService/createGarageS
         }
         return await getWithAuth('service/get-services');
     } catch (e) {
-        thunkAPI.dispatch(alertActions.setAlert({message: e.message, severity: 'error'}))
+        if (e.response.data){
+
+            if (e.response.status === 401){
+
+                return thunkAPI.rejectWithValue({message:e.response.data.message, status:401});
+            }
+            else if (e.response.data.status){
+                return thunkAPI.rejectWithValue({message:e.response.data.message, status:e.response.data.status});
+            }
+        }
+        thunkAPI.dispatch(alertActions.setAlert({message:"Error occurred!",severity:'error'}))
     }
 })
 const initialState = {
@@ -101,11 +141,13 @@ const garageServicesSlice = createSlice({
             })
             .addCase(editGarageService.fulfilled, (state, action) => {
                 state.editedService = action.payload.editedService;
-                state.garageServices = action.payload.services;
+                state.garageServices = action.payload.services || state.garageServices;
             }).addCase(createGarageService.fulfilled, (state, action) => {
-            state.garageServices = action.payload;
+            state.garageServices = action.payload || state.garageServices;
         }).addCase(deleteGarageService.fulfilled, (state, action) => {
-            state.garageServices = action.payload;
+            state.garageServices = action.payload ;
+        }).addCase(deleteGarageService.rejected,(state,action)=>{
+
         })
     },
 });

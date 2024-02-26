@@ -6,6 +6,18 @@ import {Close} from "@mui/icons-material";
 const darkTheme = createTheme({
     palette: {
         mode: 'dark',
+        primary: {
+            main: '#0000ff', // blue
+        },
+        secondary: {
+            main: '#ff0000', // red
+        },
+        success: {
+            main: '#008000', // green
+        },
+        error: {
+            main: '#ff0000', // red for danger
+        },
     },
 });
 
@@ -32,10 +44,10 @@ const GarageServiceDetails = ({service,onClose,onEdit,onDelete}) => {
                     <Typography variant="h6" gutterBottom>
                         Duration: {service.duration}
                     </Typography>
-                    <Button variant="contained" color="primary" onClick={onEdit}>
+                    <Button variant="contained" color="primary" size='small' style={{margin: '5px'}} onClick={onEdit}>
                         Edit
                     </Button>
-                    <Button variant="contained" color="secondary" onClick={onDelete}>
+                    <Button variant="contained" color="secondary" size='small' style={{margin: '5px'}} onClick={onDelete}>
                         Delete
                     </Button>
                 </Box>

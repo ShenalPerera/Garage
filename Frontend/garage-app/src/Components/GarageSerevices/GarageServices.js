@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
     Alert,
     Box, Button,
-    createTheme, Dialog, DialogActions, DialogContent, DialogTitle, Fab,
+    createTheme, Dialog, DialogActions, DialogContent, DialogTitle, Fab, makeStyles,
     Paper,
     Table,
     TableBody, TableCell,
@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    alertActions,
+    alertActions, authenticateActions,
     createGarageService,
     deleteGarageService,
     editGarageService,
@@ -21,13 +21,28 @@ import {
 } from "../../Store";
 import GarageServiceDetails from "./GarageServiceDetails/GarageServiceDetails";
 import {Add} from "@mui/icons-material";
+import {useNavigate} from "react-router-dom";
 
 
 const darkTheme = createTheme({
     palette: {
         mode: 'dark',
+        primary: {
+            main: '#0000ff', // blue
+        },
+        secondary: {
+            main: '#ff0000', // red
+        },
+        success: {
+            main: '#008000', // green
+        },
+        error: {
+            main: '#ff0000', // red for danger
+        },
     },
 });
+
+
 
 const resetFormData = {id:'',serviceName:'',duration:''}
 
@@ -39,10 +54,21 @@ const GarageServices = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState(resetFormData);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch(fetchGarageServices());
-    }, [dispatch]);
+       const fetchData = async ()=>{
+           const actionResults = await dispatch(fetchGarageServices());
+           if (fetchGarageServices.rejected.match(actionResults)){
+               dispatch(alertActions.setAlert({message:actionResults.error.message,severity:'error' }))
+               dispatch(authenticateActions.clearAuthenticate());
+               localStorage.removeItem('isLoggedIn');
+               navigate("/auth/login");
+           }
+
+       }
+       fetchData();
+    }, [dispatch, navigate]);
 
     useEffect(() => {
         if (isEditing && editedService) {
@@ -71,11 +97,29 @@ const GarageServices = () => {
     }
 
     const handleOnDelete = async ()=>{
-        await dispatch(deleteGarageService(selectedService.id));
+        const actionResults = await dispatch(deleteGarageService(selectedService.id));
         setSelectedService(null);
+        if (deleteGarageService.rejected.match(actionResults)){
+            const customError = actionResults.payload;
+            if (customError.status === 401 || customError.status === 422) {
+                dispatch(alertActions.setAlert({message: customError.message, severity: 'error'}));
+                if (customError.status === 401){
+                    localStorage.removeItem('isLoggedIn');
+                    dispatch(authenticateActions.clearAuthenticate());
+                    navigate("/auth/login");
+                }
+            }
+            else{
+                dispatch(alertActions.setAlert({message: "Error occurred!", severity: 'error'}));
+            }
+        }
+
+
+
     }
     const handleSubmit = async (event)=>{
         event.preventDefault();
+        let actionResults;
 
         let hasError = !formData.serviceName.trim() || !formData.serviceName.trim();
         if (isEditing){
@@ -86,14 +130,32 @@ const GarageServices = () => {
             dispatch(alertActions.setAlert({message:'Missing required fields',severity:'error'}))
         }
         else{
-            if (isEditing)
-                await dispatch(editGarageService(formData));
-            else
-                await dispatch(createGarageService(formData));
+            try{
+                if (isEditing)
+                    actionResults  = await dispatch(editGarageService(formData));
+                else
+                    actionResults = await dispatch(createGarageService(formData));
 
-            setIsEditing(false);
-            setOpen(false);
-            setFormData(resetFormData);
+
+                if (editGarageService.rejected.match(actionResults) || createGarageService.rejected.match(actionResults)){
+                    const customError = actionResults.payload;
+                    dispatch(alertActions.setAlert({message: customError.message, severity: 'error'}));
+                    if (customError.status === 401){
+                        localStorage.removeItem('isLoggedIn');
+                        dispatch(authenticateActions.clearAuthenticate());
+                        navigate("/auth/login");
+                    }
+                }
+
+                setIsEditing(false);
+                setOpen(false);
+                setFormData(resetFormData);
+            }
+            catch (e) {
+
+                dispatch(alertActions.setAlert({message:"Couldn't fetch the data!",severity:'error'}));
+
+            }
         }
     }
 
@@ -137,8 +199,9 @@ const GarageServices = () => {
                 <Dialog open={open} onClose={() => setOpen(false)}>
                     <DialogTitle>{isEditing? 'Edit Service' : 'Create Service'}</DialogTitle>
                     <DialogContent>
-                        <form>
+                        <Box display='flex' flexDirection='column'>
                             <TextField
+                                style={{margin:'16px'}}
                                 name="serviceName"
                                 label="Service Name"
                                 value={formData.serviceName}
@@ -146,6 +209,7 @@ const GarageServices = () => {
                                 onChange={(event)=>setFormData({...formData,serviceName: event.target.value})}
                             />
                             <TextField
+                                style={{margin:'16px'}}
                                 name="duration"
                                 label="Duration"
                                 type='number'
@@ -154,10 +218,10 @@ const GarageServices = () => {
                                 onChange={(event)=>setFormData({...formData,duration: event.target.value})}
                             />
 
-                        </form>
+                        </Box>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => setOpen(false)}>Cancel</Button>
+                        <Button  variant="contained" color="error"   onClick={() => setOpen(false)}>Cancel</Button>
                         <Button type="submit" variant="contained" color="primary" onClick={handleSubmit}>
                             {isEditing? 'Save': 'Create'}
                         </Button>

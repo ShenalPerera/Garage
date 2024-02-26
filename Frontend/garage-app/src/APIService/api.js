@@ -17,7 +17,15 @@ export const postData = async (data,path)=>{
     }
 }
 
-
+export const getData = async (path,params) =>{
+    try {
+        const response = await axios.get(`${BASE_URL}/`+path,{params});
+        return response.data;
+    }
+    catch (e) {
+        throw e;
+    }
+}
 
 const instance = axios.create();
 
@@ -41,10 +49,7 @@ export const postWithAuth = async (data,path) =>{
         return response.data;
     }
     catch (error){
-        if (error.response.data)
-            throw error.response.data;
-        else
-            throw error;
+        throw error;
     }
 }
 
@@ -54,9 +59,6 @@ export const putWithAuth  = async (data,path) =>{
         return response.data;
     }
     catch (error){
-        if (error.response.data)
-            throw error.response.data;
-        else
             throw error;
     }
 }
@@ -64,7 +66,7 @@ export const putWithAuth  = async (data,path) =>{
 
 export const getWithAuth = async (path,params= {}) =>{
     try {
-        const response = await  instance.get(`${BASE_URL}/` + path, {params});
+        const response = await  instance.get(`${BASE_URL}/` + path, {params:params});
         return response.data;
     }
     catch (e) {

@@ -1,27 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {
-    Alert, AlertTitle,
-    Avatar,
-    Box,
-    Button, Checkbox, Container, CssBaseline,
-    FormControlLabel, Grid, Snackbar,
-    TextField, Typography
+    Avatar, Box, Button, Checkbox, Container, CssBaseline, FormControlLabel, Grid, TextField, Typography
 } from "@mui/material";
-import {Error, LockOutlined} from "@mui/icons-material";
-import {Link, useActionData, useNavigate, useParams, useSearchParams, useSubmit} from "react-router-dom";
+import {LockOutlined} from "@mui/icons-material";
+import {Link, useNavigate, useParams} from "react-router-dom";
 
 import {
-    confirmPasswordValidator,
-    emailValidator,
-    passwordValidator,
-    requiredFieldValidator
+    confirmPasswordValidator, emailValidator, passwordValidator, requiredFieldValidator
 } from "../../util/validators";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {alertActions, authenticateActions} from "../../Store";
 import {postData} from "../../APIService/api";
-const InputField = ({error,...props})=>{
-    return (
-        <TextField
+
+const InputField = ({error, ...props}) => {
+    return (<TextField
             error={error.hasError}
             helperText={error.hasError ? error.message : ''}
             {...props}
@@ -31,37 +23,35 @@ const InputField = ({error,...props})=>{
 }
 const AuthForm = () => {
     const params = useParams();
-    const isLogin =  params.mode === 'login';
+    const isLogin = params.mode === 'login';
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const resetFormData = {
-        firstname: '',
-        lastname: '',
-        email: '',
-        password: '',
-        passwordConfirm: ''
+        firstname: '', lastname: '', email: '', password: '', passwordConfirm: ''
     };
     const resetFormErrors = {
-        firstname: { hasError: false, message: '' },
-        lastname: { hasError: false, message: '' },
-        email: { hasError: false, message: '' },
-        password: { hasError: false, message: '' },
-        passwordConfirm: { hasError: false, message: '' }
+        firstname: {hasError: false, message: ''},
+        lastname: {hasError: false, message: ''},
+        email: {hasError: false, message: ''},
+        password: {hasError: false, message: ''},
+        passwordConfirm: {hasError: false, message: ''}
     }
     const [formData, setFormData] = useState(resetFormData);
     const [formErrors, setFormErrors] = useState(resetFormErrors);
+    const {isLoggedIn} = useSelector(state => state.authenticate);
 
     useEffect(() => {
         setFormData(resetFormData);
         setFormErrors(resetFormErrors);
-    }, [params]);
+        if (isLoggedIn)
+            navigate("/");
+    }, [isLoggedIn, navigate, params]);
 
     const handleChange = (event) => {
-        const { name, value } = event.target;
+        const {name, value} = event.target;
         setFormData({
-            ...formData,
-            [name]: value
+            ...formData, [name]: value
         });
 
         // Validate input on change
@@ -69,7 +59,7 @@ const AuthForm = () => {
     };
 
     const validateField = (fieldName, value) => {
-        let error = { hasError: false, message: '' };
+        let error = {hasError: false, message: ''};
 
         switch (fieldName) {
             case 'firstname':
@@ -90,12 +80,11 @@ const AuthForm = () => {
         }
 
         setFormErrors(prevErrors => ({
-            ...prevErrors,
-            [fieldName]: error
+            ...prevErrors, [fieldName]: error
         }));
     };
 
-    const handleSubmit =  async (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         // Define the fields to check based on the current form
@@ -110,27 +99,25 @@ const AuthForm = () => {
             emptyFields.forEach(field => {
                 validateField(field, formData[field]);
             });
-            console.log('Form has empty required fields');
         } else {
             // Check if there are no errors
             if (!Object.values(formErrors).some(error => error.hasError)) {
                 try {
-                    const data=  await postData(formData,isLogin ? 'login':'signup');
-                    if (!isLogin){
-                        dispatch(alertActions.setAlert({message:data.message, severity:'success'}));
-                        navigate("../login");
-                    }
-                    else{
+                    const data = await postData(formData, isLogin ? 'login' : 'signup');
+                    if (!isLogin) {
+                        dispatch(alertActions.setAlert({message: data.message, severity: 'success'}));
+                        navigate("/auth/login");
+                    } else {
 
-                        dispatch(alertActions.setAlert({message:'Successfully logged in', severity:'success'}));
-                        localStorage.setItem('token',data.token);
+                        dispatch(alertActions.setAlert({message: 'Successfully logged in', severity: 'success'}));
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('isLoggedIn',"true");
                         dispatch(authenticateActions.setAuthenticate());
                         navigate('/');
                     }
-                }
-                catch (error){
+                } catch (error) {
                     console.log(error)
-                    dispatch(alertActions.setAlert({message:error.message, severity:'error'}));
+                    dispatch(alertActions.setAlert({message: error.message, severity: 'error'}));
                 }
                 // console.log('Form submitted:', formData);
             } else {
@@ -138,61 +125,60 @@ const AuthForm = () => {
             }
         }
     };
-    const { firstname, lastname, email, password, passwordConfirm } = formData;
-    const { firstname: firstnameError, lastname: lastnameError, email: emailError, password: passwordError, passwordConfirm: passwordConfirmError } = formErrors;
+    const {firstname, lastname, email, password, passwordConfirm} = formData;
+    const {
+        firstname: firstnameError,
+        lastname: lastnameError,
+        email: emailError,
+        password: passwordError,
+        passwordConfirm: passwordConfirmError
+    } = formErrors;
 
 
-    return (
-        <Container component="main" maxWidth="xs">
+    return (<Container component="main" maxWidth="xs">
 
 
-
-            <CssBaseline />
+            <CssBaseline/>
             <Box
                 sx={{
-                    marginTop: 3,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
+                    marginTop: 3, display: 'flex', flexDirection: 'column', alignItems: 'center',
                 }}
             >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                    <LockOutlined />
+                <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                    <LockOutlined/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    {isLogin ? "Login " :"Sign up"}
+                    {isLogin ? "Login " : "Sign up"}
                 </Typography>
-                <Box component="form"  onSubmit={handleSubmit}   noValidate sx={{ mt: 1 }}>
-                    {!isLogin &&
-                        <>
-                            <InputField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="firstname"
-                                label="First Name"
-                                name="firstname"
-                                autoFocus
-                                value={firstname}
-                                error={firstnameError}
-                                onChange={handleChange}
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
+                    {!isLogin && <>
+                        <InputField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="firstname"
+                            label="First Name"
+                            name="firstname"
+                            autoFocus
+                            value={firstname}
+                            error={firstnameError}
+                            onChange={handleChange}
 
-                            />
+                        />
 
-                            <InputField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="lastname"
-                                label="Last Name"
-                                name="lastname"
-                                value={lastname}
-                                error={lastnameError}
-                                onChange={handleChange}
+                        <InputField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="lastname"
+                            label="Last Name"
+                            name="lastname"
+                            value={lastname}
+                            error={lastnameError}
+                            onChange={handleChange}
 
-                            />
-                        </>
-                    }
+                        />
+                    </>}
 
                     <InputField
                         margin="normal"
@@ -200,7 +186,7 @@ const AuthForm = () => {
                         fullWidth
                         error={emailError}
                         id="email"
-                        label = "Email"
+                        label="Email"
                         autoComplete="email"
                         name='email'
                         value={email}
@@ -221,24 +207,21 @@ const AuthForm = () => {
                         onChange={handleChange}
                     />
 
-                    {
-                        !isLogin &&
-                        <InputField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="passwordConfirm"
-                            label="Confirm Password"
-                            type="password"
-                            id="passwordConfirm"
-                            value={passwordConfirm}
-                            error={passwordConfirmError}
-                            onChange={handleChange}
-                        />
-                    }
+                    {!isLogin && <InputField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="passwordConfirm"
+                        label="Confirm Password"
+                        type="password"
+                        id="passwordConfirm"
+                        value={passwordConfirm}
+                        error={passwordConfirmError}
+                        onChange={handleChange}
+                    />}
 
                     <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
+                        control={<Checkbox value="remember" color="primary"/>}
                         label="Remember me"
                     />
                     <Button
@@ -256,16 +239,15 @@ const AuthForm = () => {
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link to={`../${isLogin? 'signup':'login'}`} relative='path'>
-                                {isLogin? "Don't have an account? Sign Up":"Already have an account? Login"}
+                            <Link to={`../${isLogin ? 'signup' : 'login'}`} relative='path'>
+                                {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login"}
                             </Link>
                         </Grid>
                     </Grid>
                 </Box>
             </Box>
             {/*<Copyright sx={{ mt: 8, mb: 4 }} />*/}
-        </Container>
-    );
+        </Container>);
 };
 
 export default AuthForm;

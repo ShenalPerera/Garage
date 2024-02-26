@@ -1,11 +1,11 @@
 import React from 'react';
-import {Box, Card, CardContent, CardHeader, CardMedia, Paper, Typography} from "@mui/material";
+import {Box, Card, CardContent, CardHeader, CardMedia, Typography} from "@mui/material";
 import Header from "../Components/Header/Header";
 
 const ErrorPage = () => {
     return (
         <>
-            <Header/>
+        <Header/>
             <Box sx={{display:'flex',justifyContent:'center'} }>
                 <Card sx={{width:'100%',marginX:'25%',textAlign:'center'}}>
                     <CardHeader component='h2' title='404'/>
