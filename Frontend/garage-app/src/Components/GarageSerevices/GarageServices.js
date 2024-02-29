@@ -173,7 +173,7 @@ const GarageServices = () => {
                                 <TableRow>
                                     <TableCell>No.</TableCell>
                                     <TableCell>Service Name</TableCell>
-                                    <TableCell>Duration</TableCell>
+                                    <TableCell>Duration (min)</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>

@@ -6,7 +6,6 @@ import {getData} from "../APIService/api";
 const TTL = 60 * 1000;
 const LandingPage = () => {
     const [counts, setCounts] = useState({service:undefined, schedules:undefined, bookings:undefined});
-
     useEffect(() => {
         const updateCounts = async ()=>{
             const cachedCounts = localStorage.getItem('counts');
@@ -18,15 +17,16 @@ const LandingPage = () => {
             } else
             {
                 try {
-                    const {serviceCount,bookingsCount,scheduleCounts} = await getData("get-counts")
-                    const newCounts = {service: serviceCount,schedules: scheduleCounts,bookings: bookingsCount};
+                    const {serviceCount,bookingsCount,schedulesCount} = await getData("get-counts");
+                    const newCounts = {service: serviceCount,schedules: schedulesCount,bookings: bookingsCount};
+
                     setCounts(newCounts);
                     localStorage.setItem('counts', JSON.stringify(newCounts));
                     localStorage.setItem('countsTime', Date.now().toString());
 
                 }
                 catch (e) {
-                    
+                    console.log(e);
                 }
                 
             }
@@ -37,7 +37,7 @@ const LandingPage = () => {
     return (
         <Box display='flex' flexDirection='column' alignContent='center' height={'80vh'} justifyContent='center'>
             <Typography variant="h2" align="center" gutterBottom>
-                Real-Time Statistics
+                Statistics
             </Typography>
             <Box display="flex" flexDirection="row" justifyContent="center">
                 <CountUp finalValue={counts.service} label="Services" />

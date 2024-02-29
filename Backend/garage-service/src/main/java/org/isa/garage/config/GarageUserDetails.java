@@ -2,9 +2,11 @@ package org.isa.garage.config;
 
 import org.isa.garage.dto.UserDTO;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public class GarageUserDetails implements UserDetails {
     private Long id; // User ID
@@ -25,7 +27,7 @@ public class GarageUserDetails implements UserDetails {
         this.id = userDTO.getId();
         this.username = userDTO.getEmail();
         this.password = userDTO.getPassword();
-        this.authorities = null;
+        this.authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_" + userDTO.getRole()));
         this.enabled = userDTO.isActive();
     }
     public Long getId() {

@@ -11,10 +11,8 @@ import {
     styled, ThemeProvider,
     Typography
 } from "@mui/material";
-import {useNavigate} from "react-router-dom";
 import moment from 'moment';
-import {Delete, Edit, Save} from "@mui/icons-material";
-import {LoadingButton} from "@mui/lab";
+import {Delete, Edit} from "@mui/icons-material";
 
 const CustomBadge = styled(Badge)(({theme}) => ({
     '& .MuiBadge-dot': {
@@ -49,14 +47,6 @@ const darkTheme = createTheme({
 });
 
 const ScheduleItem = ({schedule,handleEdit,handleBookingsClick,handleDelete}) => { // Destructure schedule from props
-    const navigate = useNavigate();
-
-
-    const handleServiceClick = (serviceId) => {
-        navigate(`../service/${serviceId}`)
-    };
-
-
     const getBadgeColor = (scheduleDate, scheduleTime) => {
         const now = moment();
         const scheduleMoment = moment(`${scheduleDate} ${scheduleTime}`, 'YYYY-MM-DD HH:mm:ss'); // Combine date and time

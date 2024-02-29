@@ -10,7 +10,7 @@ import {blue, deepOrange} from "@mui/material/colors";
 
 
 const Header = () => {
-    const {isLoggedIn} = useSelector(state => state.authenticate);
+    const {isLoggedIn,role} = useSelector(state => state.authenticate);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -40,11 +40,15 @@ const Header = () => {
         dispatch(authenticateActions.clearAuthenticate());
         localStorage.removeItem('token');
         localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('role');
         setAnchorEl(null);
         navigate('/');
     }
 
-
+    const onProfileClickHandler = ()=>{
+        setAnchorEl(null);
+        navigate("/profile");
+    }
     return (
 
         <AppBar position="sticky">
@@ -58,7 +62,7 @@ const Header = () => {
                     <Tabs value={value} onChange={handleChange} aria-label="lab API tabs example">
                         <Tab sx={{color: 'white'}} label="Schedules" value="/schedules"/>
                         <Tab sx={{color: 'white'}} label="Services" value="/services"/>
-
+                        {/*{(role && role === "ROLE_ADMIN" ) && <Tab sx={{color: 'white'}} label="Users" value="/users"/>}*/}
                     </Tabs>
                 </Stack>
 
@@ -104,7 +108,9 @@ const Header = () => {
                     vertical: 'top', horizontal: 'right',
                 }}
             >
+                <MenuItem onClick={onProfileClickHandler}>Profile</MenuItem>
                 <MenuItem onClick={logOutHandler}>Logout</MenuItem>
+
             </Menu>
         </AppBar>);
 };

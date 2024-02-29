@@ -22,7 +22,7 @@ public class GeneralExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GeneralExceptionHandler.class);
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex){
+    public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex){
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
@@ -32,7 +32,25 @@ public class GeneralExceptionHandler {
             logger.error("Bad request {} - {}",fieldName,errorMessage);
         });
 
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        // Build a custom error message string
+        StringBuilder errorMessageBuilder = new StringBuilder();
+        for (Map.Entry<String, String> entry : errors.entrySet()) {
+            errorMessageBuilder.append(entry.getKey()).append(": ").append(entry.getValue()).append("; ");
+        }
+        String errorMessage = errorMessageBuilder.toString();
+        if (errorMessage.length() > 2) {
+            errorMessage = errorMessage.substring(0, errorMessage.length() - 2); // Remove the last "; "
+        }
+
+        // Create the error response DTO
+        UserErrorResponseDTO errorResponseDTO = new UserErrorResponseDTO(
+                HttpStatus.BAD_REQUEST.value(),
+                errorMessage,
+                System.currentTimeMillis()
+        );
+
+        return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
+
     }
 
     @ExceptionHandler(UserAlreadyExistException.class)
@@ -124,6 +142,16 @@ public class GeneralExceptionHandler {
                 System.currentTimeMillis()
         );
         return new ResponseEntity<>(error,HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<?> handleUserException(UserException userException){
+        UserErrorResponseDTO error = new UserErrorResponseDTO(
+                HttpStatus.BAD_REQUEST.value(),
+                userException.getMessage(),
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
     }
 
 }

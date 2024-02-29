@@ -50,6 +50,7 @@ public class SecurityConfig {
                                 .requestMatchers("/signup").permitAll()
                                 .requestMatchers("/bookings/mock-send-booking").permitAll()
                                 .requestMatchers("/get-counts").permitAll()
+                                .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                                 .anyRequest()
                                 .authenticated()
 

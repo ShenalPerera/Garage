@@ -6,12 +6,15 @@ import io.jsonwebtoken.security.Keys;
 import org.isa.garage.config.GarageUserDetails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtTokenUtil {
@@ -48,7 +51,13 @@ public class JwtTokenUtil {
         claims.put("id",garageUserDetails.getId());
         claims.put("email",garageUserDetails.getUsername());
         claims.put("active",garageUserDetails.isEnabled());
+        List<String> roles = garageUserDetails.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        claims.put("authorities", roles);
 
+        System.out.println(roles);
         return Jwts.builder()
                 .setSubject(garageUserDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))

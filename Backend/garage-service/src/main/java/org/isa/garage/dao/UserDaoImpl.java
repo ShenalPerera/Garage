@@ -7,6 +7,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Repository
 public class UserDaoImpl implements UserDao{
 
@@ -41,7 +44,7 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public UserDTO loadUserFromEmail(String email) {
-        String sql = "SELECT id,email,password,isActive FROM user WHERE email=?";
+        String sql = "SELECT id,email,password,isActive,role,firstname, lastname FROM user WHERE email=?";
         try {
             return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
                 UserDTO user = new UserDTO();
@@ -49,6 +52,9 @@ public class UserDaoImpl implements UserDao{
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 user.setActive(rs.getBoolean("isActive"));
+                user.setRole(rs.getString("role"));
+                user.setFirstname(rs.getString("firstname"));
+                user.setLastname(rs.getString("lastname"));
                 return user;
             }, email);
 
@@ -58,5 +64,65 @@ public class UserDaoImpl implements UserDao{
         }
         
     }
+
+    @Override
+    public List<UserDTO> getAllUsers() {
+        String sql = "SELECT id,email,password,isActive,role,firstname FROM user";
+        try {
+            return jdbcTemplate.query(sql, (rs, rowNum) -> {
+                UserDTO user = new UserDTO();
+                user.setId(rs.getLong("id"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setActive(rs.getBoolean("isActive"));
+                user.setRole(rs.getString("role"));
+                user.setFirstname(rs.getString("firstname"));
+                return user;
+            });
+        }
+        catch (EmptyResultDataAccessException e){
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public void updateUserDetails(UserDTO userDTO){
+        String sql = "UPDATE user SET email = ?, lastname = ?, firstname = ? WHERE id = ?";
+        jdbcTemplate.update(sql, userDTO.getEmail(), userDTO.getLastname(), userDTO.getFirstname(), userDTO.getId());
+    }
+
+    @Override
+    public UserDTO getUserById(Integer id){
+        String sql = "SELECT id,email,password,isActive,role,firstname, lastname FROM user WHERE id=?";
+        try {
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+                UserDTO user = new UserDTO();
+                user.setId(rs.getLong("id"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setActive(rs.getBoolean("isActive"));
+                user.setRole(rs.getString("role"));
+                user.setFirstname(rs.getString("firstname"));
+                user.setLastname(rs.getString("lastname"));
+                return user;
+            }, id);
+
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
+    }
+
+    @Override
+    public Boolean updatePassword(UserDTO userDTO){
+        String sql = "UPDATE user SET password = ? WHERE id = ?";
+        int rowAffected =   jdbcTemplate.update(sql,
+
+                userDTO.getPassword(),
+                userDTO.getId());
+
+        return rowAffected == 1;
+    }
+
 
 }

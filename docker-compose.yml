@@ -17,6 +17,17 @@ services:
     networks:
       - my_network
 
+
+  garage-user-demo:
+    build: ./userDemo
+    ports:
+      - "8000:8000"
+    depends_on:
+      - garage-service
+    networks:
+      - my_network
+
+
 networks:
   my_network:
     driver: bridge

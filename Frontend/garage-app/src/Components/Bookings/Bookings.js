@@ -35,15 +35,32 @@ const darkTheme = createTheme({
 
 });
 
-const Bookings = ({scheduleId,refreshBit}) => {
+const Bookings = ({schedule,refreshBit}) => {
     const [bookings, setBookings] = useState([]);
+    const [timeStatus, setTimeStatus] = useState("BEFORE")
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     useEffect( () => {
+
+
+
+        const now = new Date();
+        const start = new Date(`${schedule.date}T${schedule.startTime}`);
+        const end = new Date(`${schedule.date}T${schedule.startTime}`);
+
+        // Check if the current time is before the start time, after the end time, or in between
+        if (now < start) {
+            setTimeStatus("BEFORE");
+        } else if (now > end) {
+            setTimeStatus("AFTER");
+        } else {
+            setTimeStatus("BETWEEN");
+        }
+        console.log(schedule);
         const fetchBookings = async ()=>{
             try {
-                const bookings = await getWithAuth(`bookings/get-bookings?scheduleId=${scheduleId}`);
+                const bookings = await getWithAuth(`bookings/get-bookings?scheduleId=${schedule.id}`);
                 setBookings(bookings);
             } catch (e) {
                 if (e.response.data.message){
@@ -60,11 +77,11 @@ const Bookings = ({scheduleId,refreshBit}) => {
             }
         }
         fetchBookings();
-    }, [dispatch, scheduleId, refreshBit, navigate]);
+    }, [dispatch, schedule, refreshBit, navigate]);
 
     const handleBookingsClick = async (action,bookingId)=>{
         try {
-            const bookings = await getWithAuth(`bookings/set-status?action=${action}&bookingId=${bookingId}&scheduleId=${scheduleId}`);
+            const bookings = await getWithAuth(`bookings/set-status?action=${action}&bookingId=${bookingId}&scheduleId=${schedule.id}`);
             setBookings(bookings);
         }
         catch (e) {
@@ -125,7 +142,7 @@ const Bookings = ({scheduleId,refreshBit}) => {
                                                 color="success"
                                                 size="small"
                                                 style={{margin: '5px'}}
-                                                disabled={booking.status !== 'PENDING'}
+                                                disabled={booking.status !== 'PENDING' || timeStatus === "AFTER"}
                                                 onClick={()=>handleBookingsClick('CONFIRMED',booking.bookingId)}
                                             >
                                                 Confirm
@@ -135,7 +152,7 @@ const Bookings = ({scheduleId,refreshBit}) => {
                                                 color="error"
                                                 size="small"
                                                 style={{margin: '5px'}}
-                                                disabled={booking.status === 'CANCELED' || booking.status === 'COMPLETED'}
+                                                disabled={booking.status === 'CANCELED' || booking.status === 'COMPLETED' || timeStatus === "AFTER"}
                                                 onClick={()=>handleBookingsClick('CANCELED',booking.bookingId)}
                                             >
                                                 Cancel
@@ -144,7 +161,7 @@ const Bookings = ({scheduleId,refreshBit}) => {
                                                 variant="contained"
                                                 size="small"
                                                 style={{margin: '5px'}}
-                                                disabled={booking.status !== 'CONFIRMED'}
+                                                disabled={booking.status !== 'CONFIRMED' || timeStatus === "BEFORE"}
                                                 onClick={()=>handleBookingsClick('COMPLETED',booking.bookingId)}
                                             >
                                                 Complete

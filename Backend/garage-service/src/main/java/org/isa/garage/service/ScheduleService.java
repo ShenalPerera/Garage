@@ -42,7 +42,7 @@ public class ScheduleService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public List<ScheduleDTO> getAllSchedules(LocalDate date) {
-        return scheduleRepository.findALLByDateEquals(java.sql.Date.valueOf(date)).stream().map(MappingUtils::mapScheduleToDTO).collect(Collectors.toList());
+        return scheduleRepository.findALLByDateEqualsOrderByStartTime(java.sql.Date.valueOf(date)).stream().map(MappingUtils::mapScheduleToDTO).collect(Collectors.toList());
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

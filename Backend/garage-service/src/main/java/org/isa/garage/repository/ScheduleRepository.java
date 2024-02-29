@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule,Integer> {
 
-    List<Schedule> findALLByDateEquals(Date date);
+    List<Schedule> findALLByDateEqualsOrderByStartTime(Date date);
 
     @Query("SELECT COUNT(s) FROM Schedule s " +
             "WHERE s.date >= :date " +

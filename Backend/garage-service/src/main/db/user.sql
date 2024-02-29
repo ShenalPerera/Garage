@@ -8,3 +8,6 @@ create table user
     firstname varchar(255) null,
     lastname  varchar(255) null
 );
+
+ALTER TABLE user
+ADD role VARCHAR(25) NOT NULL DEFAULT 'USER';

@@ -13,6 +13,7 @@ import {useDispatch} from "react-redux";
 import {authenticateActions} from "./Store";
 import Users from "./Components/User/Users";
 import LandingPage from "./Components/LandingPage";
+import UserProfile from "./Components/Profile/UserProfile";
 
 
 const router = createBrowserRouter([{
@@ -31,7 +32,7 @@ const router = createBrowserRouter([{
                 {index:true,element:<LandingPage/>},
                 {path: 'schedules', element: <Schedules/>,loader:checkAuthLoader},
                 {path: 'services',element:<GarageServices/>,loader:checkAuthLoader},
-                {path: 'users',element:<Users/>}
+                {path: 'profile',element:<UserProfile/>}
             ]
         }]
 },
@@ -43,13 +44,14 @@ function App() {
 
     useEffect(() => {
         const setLoggedIn = async ()=> {
-            console.log()
             const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const role = localStorage.getItem("role");
+
             if (!isLoggedIn){
                 dispatch(authenticateActions.clearAuthenticate());
             }
             else{
-                dispatch(authenticateActions.setAuthenticate());
+                dispatch(authenticateActions.setAuthenticate(role));
             }
 
         }

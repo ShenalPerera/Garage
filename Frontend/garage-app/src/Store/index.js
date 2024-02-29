@@ -14,16 +14,24 @@ const alertSlice = createSlice({
 });
 
 
-const initialAuthenticatedStatus = {isLoggedIn: false};
+const initialAuthenticatedStatus = {isLoggedIn: false,role:null};
 
 const authenticateSlice = createSlice({
     name: 'authenticate', initialState: initialAuthenticatedStatus, reducers: {
-        setAuthenticate(state) {
+        setAuthenticate(state,action) {
             state.isLoggedIn = true;
+            state.role =action.payload;
         },
 
         clearAuthenticate(state) {
             state.isLoggedIn = false;
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("role");
+            state.role = null;
+        },
+
+        setRole(state,action){
+            state.role = action.payload;
         }
     }
 });

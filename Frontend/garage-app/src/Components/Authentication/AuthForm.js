@@ -112,16 +112,16 @@ const AuthForm = () => {
                         dispatch(alertActions.setAlert({message: 'Successfully logged in', severity: 'success'}));
                         localStorage.setItem('token', data.token);
                         localStorage.setItem('isLoggedIn',"true");
-                        dispatch(authenticateActions.setAuthenticate());
+                        localStorage.setItem("role",data.role);
+                        dispatch(authenticateActions.setAuthenticate(data.role));
                         navigate('/');
                     }
                 } catch (error) {
-                    console.log(error)
                     dispatch(alertActions.setAlert({message: error.message, severity: 'error'}));
                 }
                 // console.log('Form submitted:', formData);
             } else {
-                console.log('Form has errors');
+                dispatch(alertActions.setAlert({message: "Check the details again", severity: 'error'}));
             }
         }
     };
@@ -220,24 +220,24 @@ const AuthForm = () => {
                         onChange={handleChange}
                     />}
 
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary"/>}
-                        label="Remember me"
-                    />
+                    {/*<FormControlLabel*/}
+                    {/*    control={<Checkbox value="remember" color="primary"/>}*/}
+                    {/*    label="Remember me"*/}
+                    {/*/>*/}
                     <Button
                         type="submit"
                         fullWidth
                         variant="contained"
                         sx={{mt: 3, mb: 2}}
                     >
-                        Sign In
+                        { isLogin ? "Sign In":"Sign up"}
                     </Button>
                     <Grid container>
-                        <Grid item xs>
-                            <Link to='/' variant="body2">
-                                Forgot password?
-                            </Link>
-                        </Grid>
+                        {/*<Grid item xs>*/}
+                        {/*    <Link to='/' variant="body2">*/}
+                        {/*        Forgot password?*/}
+                        {/*    </Link>*/}
+                        {/*</Grid>*/}
                         <Grid item>
                             <Link to={`../${isLogin ? 'signup' : 'login'}`} relative='path'>
                                 {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login"}

@@ -50,7 +50,8 @@ public class JWTFilter extends OncePerRequestFilter {
         Claims claims = jwtTokenUtil.validateToken(token);
         if (!claims.isEmpty()) {
             GarageUserDetails garageUserDetails = this.garageUserDetailsService.loadUserByUsername(claims.get("email", String.class));
-            UsernamePasswordAuthenticationToken userAuthToken = new UsernamePasswordAuthenticationToken(garageUserDetails, null, null);
+
+            UsernamePasswordAuthenticationToken userAuthToken = new UsernamePasswordAuthenticationToken(garageUserDetails, null, garageUserDetails.getAuthorities());
 
             userAuthToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 

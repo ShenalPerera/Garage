@@ -1,7 +1,10 @@
 package org.isa.garage.service;
 
+import org.apache.catalina.User;
+import org.isa.garage.config.GarageUserDetails;
 import org.isa.garage.dto.GarageServiceDTO;
 import org.isa.garage.dto.GarageServiceUpdateDTO;
+import org.isa.garage.dto.UserDTO;
 import org.isa.garage.entity.GarageService;
 import org.isa.garage.entity.Schedule;
 import org.isa.garage.exception.GarageServiceException;
@@ -10,6 +13,9 @@ import org.isa.garage.repository.GarageServiceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

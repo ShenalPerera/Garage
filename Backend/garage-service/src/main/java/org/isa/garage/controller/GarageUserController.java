@@ -1,10 +1,7 @@
 package org.isa.garage.controller;
 
 import jakarta.validation.Valid;
-import org.isa.garage.dto.BookingStatusDTO;
-import org.isa.garage.dto.JWTResponseDTO;
-import org.isa.garage.dto.UserLoginDTO;
-import org.isa.garage.dto.UserSignupDTO;
+import org.isa.garage.dto.*;
 import org.isa.garage.service.GarageServicesHandlerService;
 import org.isa.garage.service.ScheduleService;
 import org.isa.garage.service.UserService;
@@ -15,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,6 +53,17 @@ public class GarageUserController {
         JWTResponseDTO jwtResponseDTO = userService.login(userLoginDTO);
         logger.info("Successfully Logged in");
         return new ResponseEntity<>(jwtResponseDTO, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/get-user")
+    public ResponseEntity<?> getUser() throws AuthenticationException {
+        return new ResponseEntity<>(userService.getUser(),HttpStatus.OK);
+    }
+
+    @PutMapping("/change-user-details")
+    public ResponseEntity<?> changeUserDetails(@RequestBody UserDTO userDTO){
+        return new ResponseEntity<>(userService.changeUserDetails(userDTO),HttpStatus.OK);
     }
 
 }

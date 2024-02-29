@@ -28,6 +28,10 @@ public class UserSignupDTO {
         this.lastname = lastname;
     }
 
+    public UserSignupDTO() {
+
+    }
+
     public String getEmail() {
         return email;
     }

@@ -1,13 +1,16 @@
 package org.isa.garage.dto;
 
+import java.util.List;
+
 public class JWTResponseDTO {
     private String token;
     private String type = "Bearer";
     private String email;
-
-    public JWTResponseDTO(String token, String email) {
+    private String role;
+    public JWTResponseDTO(String token, String email, String role) {
         this.token = token;
         this.email = email;
+        this.role = role;
     }
 
     public String getToken() {
@@ -34,4 +37,12 @@ public class JWTResponseDTO {
         this.email = email;
     }
 
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }

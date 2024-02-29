@@ -35,7 +35,6 @@ import dayjs from "dayjs";
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import Bookings from "../Bookings/Bookings";
 import {StaticDatePicker} from '@mui/x-date-pickers/StaticDatePicker';
-import CountUp from "../CountUp/CountUp";
 
 
 const scheduleResetData = {id: '', date: null, startTime: null, endTime: null, repeat: false, services: []}
@@ -64,7 +63,7 @@ function Schedules() {
     const [formData, setFormData] = useState(scheduleResetData);
     const [open, setOpen] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
-    const [scheduleId, setScheduleId] = useState(null);
+    const [schedule, setSchedule] = useState(null);
     const [refreshBit, setRefreshBit] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -160,7 +159,6 @@ function Schedules() {
     const validateForm = (formData) => {
         // List of errors
         let errors = {};
-        console.log(formData);
         // Check if all fields are filled
         for (let field in formData) {
             if (formData[field] === '' || formData[field] === null) {
@@ -208,6 +206,7 @@ function Schedules() {
                     dispatch(alertActions.setAlert({
                         message: data.count + ' Schedules Created Successfully', severity: 'success'
                     }))
+                    setSelectedDate(dayjs(formData.date, 'YYYY-MM-DD'));
                     navigate('/schedules');
                 } else {
                     await putWithAuth(submittingData, 'schedule/edit-schedule');
@@ -219,6 +218,7 @@ function Schedules() {
                     navigate(`/schedules`)
                 }
                 setFormData(scheduleResetData);
+                setIsEditMode(false);
                 setOpen(false);
 
             } catch (e) {
@@ -275,15 +275,15 @@ function Schedules() {
         setFormData(scheduleResetData);
     }
 
-    const handleClickBookings = (scheduleId) => {
-        setScheduleId(scheduleId);
+    const handleClickBookings = (schedule) => {
+        setSchedule(schedule);
         setRefreshBit(s => !s);
     }
 
     const handleOnDateChange = (newValue) => {
-        setScheduleId(sId => {
+        setSchedule(sId => {
             if (sId) {
-                setScheduleId(null);
+                setSchedule(null);
             }
         });
         setSelectedDate(newValue);
@@ -313,15 +313,14 @@ function Schedules() {
             </Box>
             <ThemeProvider theme={darkTheme}>
                 <Box flex={6} p={2}>
-                {scheduleId && <Bookings refreshBit={refreshBit} scheduleId={scheduleId}/>}
+                {schedule && <Bookings refreshBit={refreshBit} schedule={schedule}/>}
                 {scheduleData && scheduleData.length > 0 ? (<Grid container spacing={2}>
-
                     {scheduleData.map((schedule, index) => (<Grid item key={index}>
                         <ScheduleItem schedule={schedule} handleEdit={handleClickEditSchedule}
                                       handleDelete={handleDeleteSchedule}
-                                      handleBookingsClick={() => handleClickBookings(schedule.id)}/>
+                                      handleBookingsClick={() => handleClickBookings(schedule)}/>
                     </Grid>))}
-                </Grid>) : (<Alert sx={{backgroundColor: 'black', color: 'skyblue'}} severity="info">No bookings
+                </Grid>) : (<Alert sx={{backgroundColor: 'black', color: 'skyblue'}} severity="info">No Schedules
                     Available</Alert>)
 
                 }
@@ -382,7 +381,6 @@ function Schedules() {
                                                 name='startTime'
                                                 value={formData.startTime}
                                                 onChange={(newValue) => handleOnChange('startTime', newValue)}
-                                                disablePast={true}
                                             />
                                         </DemoContainer>
                                         <DemoContainer components={['TimePicker']}>
@@ -391,7 +389,6 @@ function Schedules() {
                                                 name='endTime'
                                                 value={formData.endTime}
                                                 onChange={(newValue) => handleOnChange('endTime', newValue)}
-                                                disablePast={true}
                                             />
                                         </DemoContainer>
                                     </LocalizationProvider>
@@ -425,30 +422,30 @@ function Schedules() {
                                         </Select>
                                     </FormControl>
 
-                                    <Box sx={{mt: 1}} >
-                                        <FormControlLabel
-                                            color='white'
-                                            control={<Checkbox
-                                                checked={formData.repeat}
-                                                onChange={handleOnChange}
-                                                name="repeat"
-                                            />}
-                                            label={
-                                                <Typography color={'white'}>Do you want to repeat this schedule?</Typography>
-                                            }
-                                        />
-                                    </Box>
-                                    {formData.repeat === true && (<Box sx={{mt: 1}}>
-                                        <TextField
-                                            label="Period"
-                                            name="repeatPeriod"
-                                            type='number'
-                                            inputProps={{min: '1', max: '30', step: '1'}}
-                                            onChange={handleOnChange}
-                                            variant="filled"
-                                            fullWidth
-                                        />
-                                    </Box>)}
+                                    {/*<Box sx={{mt: 1}} >*/}
+                                    {/*    <FormControlLabel*/}
+                                    {/*        color='white'*/}
+                                    {/*        control={<Checkbox*/}
+                                    {/*            checked={formData.repeat}*/}
+                                    {/*            onChange={handleOnChange}*/}
+                                    {/*            name="repeat"*/}
+                                    {/*        />}*/}
+                                    {/*        label={*/}
+                                    {/*            <Typography color={'white'}>Do you want to repeat this schedule?</Typography>*/}
+                                    {/*        }*/}
+                                    {/*    />*/}
+                                    {/*</Box>*/}
+                                    {/*{formData.repeat === true && (<Box sx={{mt: 1}}>*/}
+                                    {/*    <TextField*/}
+                                    {/*        label="Period"*/}
+                                    {/*        name="repeatPeriod"*/}
+                                    {/*        type='number'*/}
+                                    {/*        inputProps={{min: '1', max: '30', step: '1'}}*/}
+                                    {/*        onChange={handleOnChange}*/}
+                                    {/*        variant="filled"*/}
+                                    {/*        fullWidth*/}
+                                    {/*    />*/}
+                                    {/*</Box>)}*/}
 
                                     <Box display='flex' flexDirection='row' justifyContent='space-between'>
                                         <Button
